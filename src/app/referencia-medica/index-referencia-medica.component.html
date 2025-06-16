@@ -1,54 +1,77 @@
-<div class="container">
-  <h2 class="text-center">LISTADO DE REFERENCIAS MÉDICAS</h2>
+<div class="container-fluid">
+  <div class="main-container">
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <button class="btn btn-rounded btn-success mx-2" type="button" [routerLink]="['/form-ref-medica']">Nuevo
-      Registro</button>
+    <!-- Header -->
+    <div class="page-header">
+      <h1>
+        <i class="fas fa-file-medical"></i>
+        Listado de Referencias Médicas
+      </h1>
+      <div class="subtitle">Gestión de derivaciones institucionales</div>
+    </div>
 
-    <!-- <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center">
-        <label for="fecha_ref" class="mb-0 mr-2">Fecha:</label>
-        <input type="date" id="fecha_ref" class="input-date">
-        <button class="btn btn-primary ml-2">Consultar</button>
+    <!-- Stats -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-number">{{ referencias.length || 0 }}</div>
+        <div class="stat-label">Referencias Registradas</div>
       </div>
-    </div> -->
+      <div class="stat-card">
+        <div class="stat-number">{{ getEntidadFrecuente() }}</div>
+        <div class="stat-label">Entidad más referida</div>
+      </div>
+    </div>
+
+    <!-- Acción -->
+    <div class="action-bar">
+      <button class="btn btn-success-modern btn-modern" [routerLink]="['/form-ref-medica']">
+        <i class="fas fa-plus-circle me-2"></i> Nuevo Registro
+      </button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-container">
+      <div class="table-scroll">
+        <table class="table table-modern table-hover">
+          <thead>
+            <tr>
+              <th><i class="fas fa-hashtag me-2"></i>ID</th>
+              <th><i class="fas fa-id-card me-2"></i>Cédula</th>
+              <th><i class="fas fa-user me-2"></i>Nombres</th>
+              <th><i class="fas fa-user me-2"></i>Apellidos</th>
+              <th><i class="fas fa-hospital me-2"></i>Entidad</th>
+              <th><i class="fas fa-calendar-alt me-2"></i>Fecha</th>
+              <th><i class="fas fa-cogs me-2"></i>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let referencia of referencias">
+              <td>{{ referencia.id_ref }}</td>
+              <td>{{ referencia.codigo_msp_ref}}</td>
+              <td>{{ referencia.atencionMedica }}</td>
+              <td>{{ referencia.codigo_msp_ref }}</td>
+              <td>
+                <span class="tag-entidad">{{ referencia.entidad_sistema_ref }}</span>
+              </td>
+              <td>{{ referencia.fecha_ref | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn btn-primary-modern btn-sm" (click)="verDetalles(referencia)" title="Ver">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-warning-modern btn-sm" [routerLink]="['/form-ref-medica', referencia.id_ref]" title="Editar">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <!-- <button class="btn btn-danger-modern btn-sm" (click)="deleteReferencia(referencia.id_ref)" title="Eliminar">
+                    <i class="fas fa-trash"></i>
+                  </button> -->
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
   </div>
-
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>CEDULA</th>
-          <th>NOMBRES</th>
-          <th>APELLIDOS</th>
-          <th>ENTIDAD</th>
-          <th>FECHA</th>
-          <th>ACCIÓN - N° TOTAL DE REGISTROS: <span>{{ referencias.length }} </span>
-          </th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let referencia of referencias">
-          <td>{{ referencia.id_ref }}</td>
-          <td>{{ referencia.id_ref }}</td>
-          <td>{{ referencia.id_ref }}</td>
-          <td>{{ referencia.id_ref }}</td>
-          <td>{{ referencia.entidad_sistema_ref }}</td>
-          <td>{{ referencia.fecha_ref }}</td>
-          <td>
-            <button type="button" name="button" class="btn btn-primary mx-4"
-              (click)="verDetalles(referencia)">Ver</button>
-            <button type="button" name="button" class="btn btn-warning mx-4"
-              [routerLink]="['/form-ref-medica', referencia.id_ref]">Editar</button>
-            <!-- <button type="button" name="button" class="btn btn-danger mx-2" (click)="deleteReferencia(referencia.id_ref)">Eliminar</button> -->
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-
 </div>

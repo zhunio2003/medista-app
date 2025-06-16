@@ -1,58 +1,45 @@
-<div class="scroll-container">
-<div class="grid-container">
-  <mat-grid-list cols="2" rowHeight="350px">
-    <ng-container *ngFor="let card of cards | async">
-      <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
-              {{card.title}}
-            
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <ng-container [ngSwitch]="card.type">
-              <ng-template ngSwitchCase="visits">
-                <div class="container">
-                  <h1>Pacientes Totales: {{ totalPac }}</h1>
-                  <div class="card-container">
-                    <div class="card">
-                      <p>Pacientes Alumnos:</p>
-                      <p>{{ totalEst }}</p>
-                      <div class="percentage up">{{ (totalEst/totalPac)*100 | number:'1.2-2' }} &#8593;</div>
-                    </div>
-                    <div class="card">
-                      <p>Pacientes Profesores:</p>
-                      <p>{{ totalProf }}</p>
-                      <div class="percentage down">{{ (totalProf/totalPac)*100 | number:'1.2-2' }} &#8595;</div>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template ngSwitchCase="diseases">
-                <div class="container">
-                  <h1 style="font-size: 24px;">Distribución de Enfermedades</h1>
-                  <canvas baseChart
-                    [data]="pieChartData"
-                    [options]="pieChartOptions"
-                    [type]="pieChartType"
-                    style="max-height: 480px;">
-                  </canvas>
-                </div>
-              </ng-template>
-              <ng-template ngSwitchCase="lineChart">
-                <div class="container">
-                  <h1 tyle="font-size: 24px;">Cantidad de Pacientes</h1>
-                  <canvas #lineChart 
-                  style="max-height: 500px;">
-                </canvas>
-                </div>
-              </ng-template>
-            </ng-container>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    </ng-container>
-  </mat-grid-list>
-</div>
+<!-- HTML Dashboard Médico -->
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Dashboard Médico</h1>
+    <p class="dashboard-subtitle">Sistema de Gestión Médica - ISTA TEC AZUAY</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-number" id="totalPatients">120</div>
+      <div class="stat-label">Total Pacientes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏥</div>
+      <div class="stat-number" id="totalAttentions">456</div>
+      <div class="stat-label">Atenciones Médicas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🩺</div>
+      <div class="stat-number" id="totalDiagnoses">89</div>
+      <div class="stat-label">Diagnósticos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">👨‍⚕️</div>
+      <div class="stat-number" id="totalDoctors">12</div>
+      <div class="stat-label">Doctores Activos</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3 class="chart-title">Enfermedades Más Frecuentes</h3>
+      <div class="chart-container">
+        <canvas id="diseasesChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3 class="chart-title">Atenciones por Mes</h3>
+      <div class="chart-container">
+        <canvas id="attentionsChart"></canvas>
+      </div>
+    </div>
+  </div>
 </div>

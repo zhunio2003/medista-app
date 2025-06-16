@@ -116,6 +116,29 @@ export class EnfermedadesComponent {
       }
     );
   }
+
+  tipoFrecuente = this.getTipoFrecuente();
+
+  getTipoFrecuente(): string {
+  const conteo: { [tipo: string]: number } = {};
+  for (const enf of this.enfermedades) {
+    if (enf.tipoEnf) {
+      conteo[enf.tipoEnf] = (conteo[enf.tipoEnf] || 0) + 1;
+    }
+  }
+
+  let tipoMax = '';
+  let maxCount = 0;
+  for (const tipo in conteo) {
+    if (conteo[tipo] > maxCount) {
+      tipoMax = tipo;
+      maxCount = conteo[tipo];
+    }
+  }
+
+  return tipoMax;
+}
+
 }
 
 

@@ -103,6 +103,27 @@ export class ReferenciaMedicaComponent implements OnInit {
     });
   }
 
+getEntidadFrecuente(): string {
+  const conteo: { [entidad: string]: number } = {};
+
+  for (let ref of this.referencias) {
+    const entidad = ref.entidad_sistema_ref;
+    if (entidad) {
+      conteo[entidad] = (conteo[entidad] || 0) + 1;
+    }
+  }
+
+  let maxEntidad = '';
+  let max = 0;
+  for (let key in conteo) {
+    if (conteo[key] > max) {
+      max = conteo[key];
+      maxEntidad = key;
+    }
+  }
+
+  return maxEntidad || '-';
+}
 
 
 

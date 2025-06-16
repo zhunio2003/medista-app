@@ -1,89 +1,100 @@
-.grid-container {
-  margin: 20px;
-}
-
-.dashboard-card {
-  position: absolute;
-  background-color: #e7edf3;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-}
-
-canvas {
-  max-width: 100%; /* Asegurarse de que el gráfico no se extienda más allá del contenedor */
-  max-height: 200; /* Ajustar el tamaño máximo del gráfico */
-}
-
-
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-}
-
-.dashboard-card-content {
-  text-align: center;
-}
-
-.container {
-  text-align: center;
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.card {
-  background-color: #8dc0f3;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.card p {
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f6fafd, #e8f0fe);
   margin: 0;
-  font-size: 24px;
+  padding: 20px;
 }
 
-.percentage {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 5px 10px;
-  border-radius: 5px;
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.percentage.up {
-  background-color: #d4edda;
-  color: #155724;
+.dashboard-header {
+  text-align: center;
+  color: #1a202c;
+  margin-bottom: 30px;
 }
 
-.percentage.down {
-  background-color: #f8d7da;
-  color: #721c24;
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
-.disease-container {
-  margin-top: 30px;
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #4a5568;
 }
 
-.disease {
-  margin-bottom: 15px;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-.scroll-container {
-  height: 100vh; /* Ocupa el 100% de la altura del viewport */
-  width: 100vw;  /* Ocupa el 100% del ancho del viewport */
-  overflow-y: auto; /* Habilita el desplazamiento vertical */
-  overflow-x: auto; /* Habilita el desplazamiento horizontal si es necesario */
-  box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total */
-  padding: 10px; /* Opcional: Añadir un relleno interno */
-  border: 1px solid #ccc; /* Opcional: Añadir un borde para visualizar mejor el contenedor */
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 25px;
+  text-align: center;
+}
+
+.stat-icon {
+  background: #3182ce;
+  color: white;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #718096;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+}
+
+.chart-title {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #2d3748;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  height: 300px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
 }
