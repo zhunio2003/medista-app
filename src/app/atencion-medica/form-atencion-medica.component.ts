@@ -113,29 +113,29 @@ export class FormAtencionMedicaComponent implements OnInit {
     }
   }
 
- buscarFicha(): void {
-  if (this.pacienteEncontrado) {
-    this.fichaMedicaService.getFichaPaciente(this.pacienteEncontrado.id).subscribe(
-      fichaMedica => {
-        this.fichaMedica = fichaMedica;
+  buscarFicha(): void {
+    if (this.pacienteEncontrado) {
+      this.fichaMedicaService.getFichaPaciente(this.pacienteEncontrado.id).subscribe(
+        fichaMedica => {
+          this.fichaMedica = fichaMedica;
 
-        this.atencionMedica.fichaMedica.cedula = this.fichaMedica.paciente.cedula;
-        this.atencionMedica.fichaMedica.paciente = `${fichaMedica.paciente.apellido} ${fichaMedica.paciente.nombre}`;
+          this.atencionMedica.fichaMedica.cedula = this.fichaMedica.paciente.cedula;
+          this.atencionMedica.fichaMedica.paciente = `${fichaMedica.paciente.apellido} ${fichaMedica.paciente.nombre}`;
 
-        /*if (fichaMedica.paciente.genero === 'femenino' || fichaMedica.paciente.genero === 'F') {
-          this.buscarEmergenciObstetrica();
-        }*/
-       
-      },
-      error => {
-        console.error('Error al buscar al paciente:', error);
-        this.pacienteEncontrado = null;
-      }
-    );
-  } else {
-    console.error('No se puede buscar ficha: paciente no encontrado.');
+          /*if (fichaMedica.paciente.genero === 'femenino' || fichaMedica.paciente.genero === 'F') {
+            this.buscarEmergenciObstetrica();
+          }*/
+
+        },
+        error => {
+          console.error('Error al buscar al paciente:', error);
+          this.pacienteEncontrado = null;
+        }
+      );
+    } else {
+      console.error('No se puede buscar ficha: paciente no encontrado.');
+    }
   }
-}
 
 
   buscarEmergenciObstetrica(): void {
@@ -237,12 +237,13 @@ export class FormAtencionMedicaComponent implements OnInit {
       this.atencionMedica.fichaMedica.paciente = `${this.fichaMedica.paciente.apellido} ${this.fichaMedica.paciente.nombre}`;
     }
     console.log("Paciente asignado:", this.atencionMedica.fichaMedica.paciente);
-    
+
     // Convertir todos los PDFs a base64 antes de enviar
     for (let examen of this.atencionMedica.examenesComplementarios) {
       if (examen.archivoPdfFile) {
         try {
           const base64 = await this.convertToBase64(examen.archivoPdfFile);
+          examen.archivoPdf = base64; // ✅ ahora sí va al backend
         } catch (error) {
           console.error(`Error al convertir PDF a base64 para el examen ${examen.nombre}`, error);
         }

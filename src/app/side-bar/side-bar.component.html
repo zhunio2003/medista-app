@@ -1,66 +1,71 @@
 <div class="wrapper">
   <!-- Menú lateral -->
   <aside id="sidebar" class="expand">
-    <!-- Logo institucional y botón hamburguesa -->
-    <div class="sidebar-logo-box">
-      <!-- Logo: coloca aquí tu imagen, asegúrate de la ruta -->
-      <div class="sidebar-logo-text">ISTA TEC<br>AZUAY</div>
-    </div>
+    
     <!-- Botón toggle -->
     <button class="toggle-btn" type="button">
       <i class="bi bi-list"></i>
     </button>
+
+    <!-- Logo institucional debajo del botón hamburguesa -->
+    <div class="sidebar-logo-box">
+      <!-- Aquí va tu logo - asegúrate de que la ruta sea correcta -->
+      <img src="/assets/logoi.png" alt="Logo ISTA TEC AZUAY" class="logo-institucional">
+      <div class="sidebar-logo-text">ISTA TEC<br>AZUAY</div>
+    </div>
+
     <!-- Navegación -->
     <ul class="sidebar-nav">
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Home">
         <a class="sidebar-link" routerLink="/home" routerLinkActive="active">
           <i class="bi bi-house"></i>
           <span>Home</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Ficha Médica">
         <a class="sidebar-link" routerLink="/ficha-medica" routerLinkActive="active">
           <i class="bi bi-heart"></i>
           <span>Ficha Médica</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Atención Médica">
         <a class="sidebar-link" routerLink="/atencion-medica" routerLinkActive="active">
           <i class="bi bi-clipboard-heart"></i>
           <span>Atención Médica</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Enfermedades">
         <a class="sidebar-link" routerLink="/enfermedades" routerLinkActive="active">
           <i class="bi bi-card-list"></i>
           <span>Enfermedades</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Referencia Médica">
         <a class="sidebar-link" routerLink="/referencia-medica" routerLinkActive="active">
           <i class="bi bi-file-earmark-person"></i>
           <span>Referencia Médica</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Doctor">
         <a class="sidebar-link" routerLink="/doctor" routerLinkActive="active">
           <i class="bi bi-person"></i>
           <span>Doctor</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Reportes">
         <a class="sidebar-link" routerLink="/reportes" routerLinkActive="active">
           <i class="bi bi-bar-chart"></i>
           <span>Reportes</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" data-tooltip="Configuración">
         <a class="sidebar-link" routerLink="/setting" routerLinkActive="active">
           <i class="bi bi-gear"></i>
           <span>Setting</span>
         </a>
       </li>
     </ul>
+
     <!-- Pie del menú -->
     <div class="sidebar-footer">
       <a (click)="onLogout()" class="sidebar-link">
@@ -68,6 +73,7 @@
         <span>Cerrar sesión</span>
       </a>
     </div>
+
     <!-- Datos del usuario -->
     <div class="hidder hidden">
       <ul class="user-info" *ngIf="auth.user$ | async as user">
@@ -77,6 +83,7 @@
       </ul>
     </div>
   </aside>
+
   <!-- Aquí se carga el contenido dinámico de las rutas -->
   <div class="main p-0">
     <router-outlet></router-outlet>
