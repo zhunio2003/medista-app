@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReferenciaMedicaService } from '../referencia-medica.service';
 import Swal from 'sweetalert2';
 
-import { Doctor } from '../../doctor/doctor';
+import { Doctor } from '../../core/model/doctor';
 import { ReferenciaMedica } from '../referencia-medica';
 import { Diagnostico } from '../diagnostico/diagnostico';
 import { Enfermedades } from '../../enfermedades/Enfermedades';
 import { EnfermedadesService } from '../../enfermedades/enfermedades.service';
-import { DoctorService } from '../../doctor/doctor.service';
+import { DoctorService } from '../../core/service/doctor.service';
 import { AtencionMedicaService } from '../../atencion-medica/service/atencion-medica.service';
 import { DiagnosticoService } from '../diagnostico/diagnostico.service';
 

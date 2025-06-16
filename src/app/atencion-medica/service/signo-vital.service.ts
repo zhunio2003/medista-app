@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SignoVital } from '../modelo/signo-vital';
+import { SignoVital } from '../../core/model/signo-vital';
 
 @Injectable({
   providedIn: 'root'

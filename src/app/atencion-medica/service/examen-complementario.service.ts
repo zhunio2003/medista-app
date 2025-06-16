@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ExamenComplementario } from '../modelo/examen-complementario';
+import { ExamenComplementario } from '../../core/model/examen-complementario';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class ExamenComplementarioService {
   }
 
   // Método para subir un archivo PDF
-  uploadPdf(id: number, file: File): Observable<void> {
+  uploadPdf(id: string, file: File): Observable<void> {
     const formData: FormData = new FormData();
     formData.append('file', file);
 

@@ -1,5 +1,5 @@
-import { AtencionMedica } from "../atencion-medica/modelo/atencion-medica";
-import { Doctor } from "../doctor/doctor";
+import { AtencionMedica } from "../core/model/atencion-medica";
+import { Doctor } from "../core/model/doctor";
 import { FichaMedica } from "../ficha-medica/modelo/ficha-medica";
 import { Diagnostico } from "./diagnostico/diagnostico";
 

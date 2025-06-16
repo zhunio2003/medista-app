@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AtencionMedica } from './modelo/atencion-medica';
+import { AtencionMedica } from '../core/model/atencion-medica';
 import { AtencionMedicaService } from './service/atencion-medica.service';
 import { FichaMedicaService } from '../ficha-medica/servicio/ficha-medica.service';
 import { PacienteService } from '../reportes/paciente.service';
@@ -65,9 +65,9 @@ export class AtencionMedicaComponent {
   }*/
   verDetalles(atencionMedica: AtencionMedica): void {
     Swal.fire({
-      title: `Paciente ${atencionMedica.fichaMedica.paciente.nombrePac} ${atencionMedica.fichaMedica.paciente.apellidoPac}`,
+      title: `Paciente ${atencionMedica.fichaMedica.paciente}`,
       html: `
-        <p><strong>Cédula:</strong> ${atencionMedica.fichaMedica.paciente.cedulaPac}</p>
+        <p><strong>Cédula:</strong> ${atencionMedica.fichaMedica.cedula}</p>
         <p><strong>Motivo:</strong> ${atencionMedica.motivoAte}</p>
         <p><strong>Enfermedad Actual:</strong> ${atencionMedica.enfermedadActualAte}</p>
         <p><strong>Tratamiento:</strong> ${atencionMedica.tratamientoAte}</p>

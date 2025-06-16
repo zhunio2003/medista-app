@@ -1,72 +1,183 @@
-<div class="container">
-  <h1>Lista de Doctores</h1>
-  <div>
-    <button class="btn btn-rounded btn-success mx-2" type="button" [routerLink]="['/doctor/formDoc']">Registrar doctor</button>
-    <div class="input-container">
-      
-      <input type="text" id="cedula" [(ngModel)]="cedulaBusqueda" placeholder="Cedula">
-      <button type="button" name="button" class="btn btn-primary mx-4" (click)="buscar()">Buscar</button>
-      <button type="button" name="button" class="btn btn-secondary"(click)="refrescar()">Ver todo</button>
+<div class="container-fluid">
+  <div class="main-container">
+    <!-- Header -->
+    <div class="page-header">
+      <h1>
+        <i class="fas fa-user-md"></i>
+        Lista de Doctores
+      </h1>
+      <div class="subtitle">Sistema de Gestión Médica - ISTA TEC AZUAY</div>
     </div>
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped" *ngIf="doctorEncontrado; else listaDoctores">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>CI</th>
-            <th>Cod MSP</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Especialidad</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{doctorEncontrado.idDoctor}}</td>
-            <td>{{doctorEncontrado.cedulaDoc}}</td>
-            <td>{{doctorEncontrado.codigoMspDoc}}</td>
-            <td>{{doctorEncontrado.nombreDoc}}</td>
-            <td>{{doctorEncontrado.apellidoDoc}}</td>
-            <td>{{doctorEncontrado.especialidadDoc}}</td>
-            <td>
-              <button type="button" name="button" class="btn btn-primary mx-4" (click)="verDetalles(doctorEncontrado)">Ver</button>
-              <button type="button" name="button" class="btn btn-warning mx-4" [routerLink]="['/doctor/formDoc', doctorEncontrado.idDoctor]">Editar</button>
-              <button type="button" name="button" class="btn btn-danger mx-2" (click)="deleteDoctor(doctorEncontrado.idDoctor)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #listaDoctores>
-        <table class="table table-bordered table-striped">
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-number">{{ doctores?.length || 0 }}</div>
+        <div class="stat-label">Total Doctores</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ getUniqueSpecialties() }}</div>
+        <div class="stat-label">Especialidades</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Activos</div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="btn btn-success-modern btn-modern" type="button" [routerLink]="['/doctor/formDoc']">
+        <i class="fas fa-plus-circle me-2"></i>
+        Registrar Doctor
+      </button>
+      
+      <div class="search-container">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="fas fa-search text-muted"></i>
+          </span>
+          <input 
+            type="text" 
+            class="form-control form-control-modern border-start-0" 
+            [(ngModel)]="cedulaBusqueda"
+            placeholder="Buscar por cédula..."
+            (keyup.enter)="buscar()">
+        </div>
+        <button type="button" class="btn btn-primary-modern btn-modern" (click)="buscar()">
+          <i class="fas fa-search me-2"></i>
+          <span class="loading-spinner" *ngIf="isLoading"></span>
+          <span *ngIf="!isLoading">Buscar</span>
+        </button>
+        <button type="button" class="btn btn-secondary-modern btn-modern" (click)="refrescar()">
+          <i class="fas fa-refresh me-2"></i>
+          Ver Todo
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+      <div class="table-scroll">
+        <!-- Tabla para doctor encontrado (búsqueda individual) -->
+        <table class="table table-modern table-hover" *ngIf="doctorEncontrado; else listaDoctores">
           <thead>
             <tr>
-              <th>Id</th>
-              <th>CI</th>
-              <th>Cod MSP</th>
-              <th>Nombres</th>
-              <th>Apellidos</th>
-              <th>Especialidad</th>
-              <th>Action</th>
+              <th><i class="fas fa-hashtag me-2"></i>ID</th>
+              <th><i class="fas fa-id-card me-2"></i>CI</th>
+              <th><i class="fas fa-code me-2"></i>Cod MSP</th>
+              <th><i class="fas fa-user me-2"></i>Nombres</th>
+              <th><i class="fas fa-user me-2"></i>Apellidos</th>
+              <th><i class="fas fa-stethoscope me-2"></i>Especialidad</th>
+              <th><i class="fas fa-cogs me-2"></i>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let doctor of doctores">
-              <td>{{doctor.idDoctor}}</td>
-              <td>{{doctor.cedulaDoc}}</td>
-              <td>{{doctor.codigoMspDoc}}</td>
-              <td>{{doctor.nombreDoc}}</td>
-              <td>{{doctor.apellidoDoc}}</td>
-              <td>{{doctor.especialidadDoc}}</td>
+            <tr>
+              <td><span class="doctor-id">{{ doctorEncontrado.id }}</span></td>
+              <td>{{ doctorEncontrado.cedula }}</td>
+              <td><code>{{ doctorEncontrado.codigoMsp }}</code></td>
+              <td><strong>{{ doctorEncontrado.nombre }}</strong></td>
+              <td><strong>{{ doctorEncontrado.apellido }}</strong></td>
+              <td><span class="doctor-specialty">{{ doctorEncontrado.especialidad }}</span></td>
               <td>
-                <button type="button" name="button" class="btn btn-primary mx-4" (click)="verDetalles(doctor)">Ver</button>
-                <button type="button" name="button" class="btn btn-warning mx-4" [routerLink]="['/doctor/formDoc', doctor.idDoctor]">Editar</button>
-                <button type="button" name="button" class="btn btn-danger mx-2" (click)="deleteDoctor(doctor.idDoctor)">Eliminar</button>
+                <div class="action-buttons">
+                  <button 
+                    class="btn btn-primary-modern btn-sm" 
+                    (click)="verDetalles(doctorEncontrado)"
+                    title="Ver detalles">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button 
+                    class="btn btn-warning-modern btn-sm" 
+                    [routerLink]="['/doctor/formDoc', doctorEncontrado.id]"
+                    title="Editar">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    class="btn btn-danger-modern btn-sm" 
+                    (click)="deleteDoctor(doctorEncontrado.id)"
+                    title="Eliminar">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
-      </ng-template>
+
+        <!-- Template para lista completa de doctores -->
+        <ng-template #listaDoctores>
+          <table class="table table-modern table-hover" *ngIf="doctores && doctores.length > 0; else emptyState">
+            <thead>
+              <tr>
+                <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                <th><i class="fas fa-id-card me-2"></i>CI</th>
+                <th><i class="fas fa-code me-2"></i>Cod MSP</th>
+                <th><i class="fas fa-user me-2"></i>Nombres</th>
+                <th><i class="fas fa-user me-2"></i>Apellidos</th>
+                <th><i class="fas fa-stethoscope me-2"></i>Especialidad</th>
+                <th><i class="fas fa-cogs me-2"></i>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doctor of doctores; trackBy: trackByDoctorId">
+                <td><span class="doctor-id">{{ doctor.id }}</span></td>
+                <td>{{ doctor.cedula }}</td>
+                <td><code>{{ doctor.codigoMsp }}</code></td>
+                <td><strong>{{ doctor.nombre }}</strong></td>
+                <td><strong>{{ doctor.apellido }}</strong></td>
+                <td><span class="doctor-specialty">{{ doctor.especialidad }}</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button 
+                      class="btn btn-primary-modern btn-sm" 
+                      (click)="verDetalles(doctor)"
+                      title="Ver detalles">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button 
+                      class="btn btn-warning-modern btn-sm" 
+                      [routerLink]="['/doctor/formDoc', doctor.id]"
+                      title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button 
+                      class="btn btn-danger-modern btn-sm" 
+                      (click)="deleteDoctor(doctor.id)"
+                      title="Eliminar">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+
+        <!-- Estado vacío -->
+        <ng-template #emptyState>
+          <div class="empty-state">
+            <i class="fas fa-user-md-slash"></i>
+            <h3>No se encontraron doctores</h3>
+            <p>No hay doctores registrados en el sistema o no se encontraron resultados para la búsqueda.</p>
+            <button class="btn btn-success-modern btn-modern" [routerLink]="['/doctor/formDoc']">
+              <i class="fas fa-plus-circle me-2"></i>
+              Registrar Primer Doctor
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3">Cargando información...</p>
+      </div>
     </div>
   </div>
 </div>

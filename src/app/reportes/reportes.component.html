@@ -46,11 +46,11 @@
       <tbody>
         
         <tr *ngFor="let atencion of atenciones">
-          <td class="nombre-col">{{ atencion.fichaMedica.paciente.nombrePac+' '+ atencion?.fichaMedica?.paciente?.apellidoPac}}</td>
-          <td>{{ atencion.fichaMedica.paciente.cedulaPac }}</td>
+          <td class="nombre-col">{{ atencion.fichaMedica.paciente.nombre + ' '+ atencion?.fichaMedica?.paciente?.apellido}}</td>
+          <td>{{ atencion.fichaMedica.paciente.cedula }}</td>
           <td>{{ atencion.motivoAte }}</td>
-          <td>{{ atencion.fichaMedica.paciente.fechaNacimientoPac }}</td>
-          <td>{{ atencion.fichaMedica.paciente.carreraPac }}</td>
+          <td>{{ atencion.fichaMedica.paciente.fechaNacimiento }}</td>
+          <td>{{ atencion.fichaMedica.paciente.carrera }}</td>
           <td>{{ atencion.fechaAtencionAte }}</td>
           <td>{{ atencion.tratamientoAte }}</td>
           </tr>
@@ -74,11 +74,11 @@
         <tbody>
           <tr *ngFor="let atencion of atenciones; let i = index">
             <td>{{ i + 1 }}</td>
-            <td class="nombre-col">{{ atencion?.fichaMedica?.paciente?.nombrePac+' '+ atencion?.fichaMedica?.paciente?.apellidoPac}}</td>
-            <td>{{ atencion?.fichaMedica?.paciente?.cedulaPac}}</td>
+            <td class="nombre-col">{{ atencion?.fichaMedica?.paciente?.nombre+' '+ atencion?.fichaMedica?.paciente?.apellido}}</td>
+            <td>{{ atencion?.fichaMedica?.paciente?.cedula}}</td>
             <td>{{ atencion?.motivoAte}}</td>
-            <td>{{ atencion?.fichaMedica?.paciente?.fechaNacimientoPac}}</td>
-            <td>{{ atencion?.fichaMedica?.paciente?.carreraPac}}</td>
+            <td>{{ atencion?.fichaMedica?.paciente?.fechaNacimiento}}</td>
+            <td>{{ atencion?.fichaMedica?.paciente?.carrera}}</td>
             <td>{{ atencion?.fechaAtencionAte}}</td>
             <td>{{ atencion?.tratamientoAte}}</td>
           </tr>

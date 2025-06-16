@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReferenciaMedicaService } from './referencia-medica.service';
 import { ReferenciaMedica } from './referencia-medica';
 import Swal from 'sweetalert2';
-import { AtencionMedica } from '../atencion-medica/modelo/atencion-medica';
+import { AtencionMedica } from '../core/model/atencion-medica';
 import { AtencionMedicaService } from '../atencion-medica/service/atencion-medica.service';
 
 @Component({
@@ -86,8 +86,7 @@ export class ReferenciaMedicaComponent implements OnInit {
       title: `${referencia.entidad_sistema_ref}`,
       html: `
         <p><strong>Fecha:</strong> ${referencia.fecha_ref}</p>
-        <p><strong>ID atencion medica:</strong> ${referencia.atencionMedica?.idAte}</p>
-        <p><strong>Paciente:</strong> ${referencia.atencionMedica?.fichaMedica.paciente.cedulaPac} - ${referencia.atencionMedica?.fichaMedica.paciente.nombrePac} ${referencia.atencionMedica?.fichaMedica.paciente.apellidoPac}</p>
+        <p><strong>Paciente:</strong> ${referencia.atencionMedica?.fichaMedica.cedula} - ${referencia.atencionMedica?.fichaMedica.paciente}</p>
         <p><strong>Entidad:</strong> ${referencia.entidad_sistema_ref}</p>
         <p><strong>Especialidad:</strong> ${referencia.especialidad_ref}</p>
         <p><strong>Establecimiento:</strong> ${referencia.establecimiento_ref}</p>

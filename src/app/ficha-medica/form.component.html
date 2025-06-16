@@ -7,24 +7,24 @@
     <div class="input-container mx-4">
         <div class="column">
             <label for="profesion">Rol</label>
-            <select name="profesion" id="profesion" placeholder="Seleccione" [(ngModel)]="fichaMedica.paciente.profesionPac" name="profesion" required>
+            <select name="profesion" id="profesion" placeholder="Seleccione" [(ngModel)]="fichaMedica.paciente.profesion" name="profesion" required>
                 <option value="Profesor">Profesor</option>
                 <option value="Estudiante">Estudiante</option>
             </select>
             <label for="cedula">Cedula</label>
-            <input type="text" id="cedula" placeholder="Cedula" class="form-control" [(ngModel)]="fichaMedica.paciente.cedulaPac" name="cedula" [disabled]="editMode" required>
+            <input type="text" id="cedula" placeholder="Cedula" class="form-control" [(ngModel)]="fichaMedica.paciente.cedula" name="cedula" [disabled]="editMode" required>
             <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" placeholder="Nombre"[(ngModel)]="fichaMedica.paciente.nombrePac" name="nombre" required>
+            <input type="text" id="nombre" placeholder="Nombre"[(ngModel)]="fichaMedica.paciente.nombre" name="nombre" required>
             <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" placeholder="Apellido"[(ngModel)]="fichaMedica.paciente.apellidoPac" name="apellido" required>
+            <input type="text" id="apellido" placeholder="Apellido"[(ngModel)]="fichaMedica.paciente.apellido" name="apellido" required>
             <label for="fechanacimiento">Fecha Nacimiento</label>
-            <input type="date" name="fechanacimiento" id="fechanacimiento" placeholder="Seleccione" [(ngModel)]="fichaMedica.paciente.fechaNacimientoPac" name="fechanacimiento"required>
+            <input type="date" name="fechanacimiento" id="fechanacimiento" placeholder="Seleccione" [(ngModel)]="fichaMedica.paciente.fechaNacimiento" name="fechanacimiento"required>
             <label for="lugar">Lugar</label>
-            <input type="text" id="lugar" placeholder="Lugar" [(ngModel)]="fichaMedica.paciente.lugarPac" name="Lugar" required>
+            <input type="text" id="lugar" placeholder="Lugar" [(ngModel)]="fichaMedica.paciente.lugar" name="Lugar" required>
         </div>
         <div class="column">
             <label for="pais">Pais</label>
-            <select name="pais" id="pais" [(ngModel)]="fichaMedica.paciente.paisPac" name="pais" required>
+            <select name="pais" id="pais" [(ngModel)]="fichaMedica.paciente.pais" name="pais" required>
                 <option value="seleccione">Seleccione</option>
                 <option value="ecuador">Ecuador</option>
                 <option value="colombia">Colombia</option>
@@ -38,15 +38,15 @@
                 <option value="mexico">México</option>
             </select>
             <label for="direccion">Direción</label>
-            <input type="text" id="direccion" placeholder="Direccion" [(ngModel)]="fichaMedica.paciente.direccionPac" name="direccion" required>
+            <input type="text" id="direccion" placeholder="Direccion" [(ngModel)]="fichaMedica.paciente.direccion" name="direccion" required>
             <label for="barrio">Barrio</label>
-            <input type="text" id="barrio" placeholder="Barrio" [(ngModel)]="fichaMedica.paciente.barrioPac" name="barrio" required>
+            <input type="text" id="barrio" placeholder="Barrio" [(ngModel)]="fichaMedica.paciente.barrio" name="barrio" required>
             <label for="parroquia">Parroquia</label>
-            <input type="text" id="parroquia" placeholder="Parroquia" [(ngModel)]="fichaMedica.paciente.parroquiaPac" name="parroquia" required>
+            <input type="text" id="parroquia" placeholder="Parroquia" [(ngModel)]="fichaMedica.paciente.parroquia" name="parroquia" required>
             <label for="canton">Cantón</label>
-            <input type="text" id="canton" placeholder="Cantón" [(ngModel)]="fichaMedica.paciente.cantonPac" name="canton" required>
+            <input type="text" id="canton" placeholder="Cantón" [(ngModel)]="fichaMedica.paciente.canton" name="canton" required>
             <label for="provincia">Provincia</label>
-            <select name="provincia" id="provincia" [(ngModel)]="fichaMedica.paciente.provinciaPac" name="provincia" required>
+            <select name="provincia" id="provincia" [(ngModel)]="fichaMedica.paciente.provincia" name="provincia" required>
                 <option value="seleccione">Seleccione</option>
                 <option value="azuay">Azuay</option>
                 <option value="bolivar">Bolívar</option>
@@ -76,15 +76,15 @@
         </div>
         <div class="column"> 
             <label for="telefono">Telefono</label>
-            <input type="text" id="telefono" placeholder="Telefono" [(ngModel)]="fichaMedica.paciente.telefonoPac" name="telefono" required>
+            <input type="text" id="telefono" placeholder="Telefono" [(ngModel)]="fichaMedica.paciente.telefono" name="telefono" required>
             <label for="genero">Genero</label>
-            <select name="genero" id="genero" [(ngModel)]="fichaMedica.paciente.generoPac" required>
+            <select name="genero" id="genero" [(ngModel)]="fichaMedica.paciente.genero" required>
                 <option value="seleccione">Seleccione</option>
                 <option value="masculino">Masculino</option>
                 <option value="femenino">Femenino</option>
             </select>
             <label for="estcivil">Estado Civil</label>
-            <select name="estcivil" id="estcivil" [(ngModel)]="fichaMedica.paciente.estadoCivilPac" name="estcivil" required>
+            <select name="estcivil" id="estcivil" [(ngModel)]="fichaMedica.paciente.estadoCivil" name="estcivil" required>
                 <option value="seleccione">Seleccione</option>
                 <option value="soltero">Soltero</option>
                 <option value="casado">Casado</option>
@@ -93,7 +93,7 @@
                 <option value="unionlibre">Union Libre</option>
             </select>
             <label for="tiposangre">Tipo Sangre</label>
-            <select name="tiposangre" id="tiposangre" [(ngModel)]="fichaMedica.paciente.tipoSangrePac" name="tiposangre" required>
+            <select name="tiposangre" id="tiposangre" [(ngModel)]="fichaMedica.paciente.tipoSangre" name="tiposangre" required>
                 <option value="seleccione">Seleccione</option>
                 <option value="o+">O+</option>
                 <option value="o-">O-</option>
@@ -105,14 +105,14 @@
                 <option value="ab-">AB-</option>
             </select>
             <label for="carrera">Carrera</label>
-            <select name="carrera" id="carrera" [(ngModel)]="fichaMedica.paciente.carreraPac" name="carrera" [disabled]="fichaMedica.paciente.profesionPac === 'Profesor'" required >
+            <select name="carrera" id="carrera" [(ngModel)]="fichaMedica.paciente.carrera" name="carrera" [disabled]="fichaMedica.paciente.profesion === 'Profesor'" required >
                 <option value="seleccione">Seleccione</option>
                 <option value="software">Desarrollo de software</option>
                 <option value="bigdata">Big Data</option>
                 <option value="ciberseguridad">Ciberseguridad</option>
             </select>
             <label for="ciclo">Ciclo</label>
-            <select name="ciclo" id="ciclo" [(ngModel)]="fichaMedica.paciente.cicloPac" name="ciclo" [disabled]="fichaMedica.paciente.profesionPac === 'Profesor'" required>
+            <select name="ciclo" id="ciclo" [(ngModel)]="fichaMedica.paciente.ciclo" name="ciclo" [disabled]="fichaMedica.paciente.profesion === 'Profesor'" required>
                 <option value="seleccione">Seleccione</option>
                 <option value="primero">Primero</option>
                 <option value="segundo">Segundo</option>
@@ -155,7 +155,7 @@
 
     <br>
 
-    <fieldset *ngIf="fichaMedica.paciente.generoPac === 'femenino'" class="container-emergencia-obstetrica form-grid mx-4">
+    <fieldset *ngIf="fichaMedica.paciente.genero === 'femenino'" class="container-emergencia-obstetrica form-grid mx-4">
 
         <div class="input-container-inline">
             <label for="pa" >Menarca:</label>

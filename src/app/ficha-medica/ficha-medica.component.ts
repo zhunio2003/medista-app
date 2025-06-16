@@ -4,145 +4,143 @@ import { FichaMedicaService } from './servicio/ficha-medica.service';
 import { Paciente } from './modelo/paciente';
 import { FichaMedica } from './modelo/ficha-medica';
 import Swal from 'sweetalert2';
-import { DiscapacidadService } from './servicio/discapacidad.service';
-import { AntecedenteFamiliarService } from './servicio/antecedente-familiar.service';
+
 @Component({
   selector: 'app-ficha-medica',
   templateUrl: './index-ficha-medica.component.html',
-  styleUrl: './ficha-medica.component.css'
+  styleUrls: ['./ficha-medica.component.css']
 })
-export class FichaMedicaComponent /*implements OnInit */ {
-  fichaMedica: FichaMedica[] = []; // Asegúrate de inicializar pacientes como un arreglo vacío
+export class FichaMedicaComponent implements OnInit {
+  fichaMedica: FichaMedica[] = [];
   cedulaBusqueda: string = '';
-  apellidoBusqueda: string='';
+  apellidoBusqueda: string = '';
   profesionBusqueda: string = '';
-  //fichaMedicaEncontrada:FichaMedica | null=null;
-  fichaMedicaEncontrada: FichaMedica[] = []; // Cambia a un arreglo para múltiples resultados
+  fichaMedicaEncontrada: FichaMedica[] = [];
 
-  constructor(private fichaMedicaService: FichaMedicaService,private pacienteService:PacienteService) { }
+  constructor(
+    private fichaMedicaService: FichaMedicaService,
+    private pacienteService: PacienteService
+  ) {}
 
   ngOnInit(): void {
-    this.cargarFichaMedica(); // Llama a cargarPacientes()
+    this.cargarFichaMedica();
   }
 
   cargarFichaMedica(): void {
     this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-      fichaMedica = this.fichaMedica = fichaMedica; // Asigna los pacientes obtenidos del servicio a la propiedad del componente
+      this.fichaMedica = fichaMedica;
     });
   }
 
-  /// BOTON VER
-  // uso Sweetalert para mostrar datos de un registro y asigno en el boton ver
   verDetalle(fichaMedica: FichaMedica): void {
     Swal.fire({
-      title: `${fichaMedica.paciente.nombrePac} ${fichaMedica.paciente.apellidoPac}`,
+      title: `${fichaMedica.paciente.nombre} ${fichaMedica.paciente.apellido}`,
       html: `
-      <div style="display: flex; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 200px; padding-right: 10px;">
-          <p><strong>Fecha Registro:</strong>${fichaMedica.fechaElaboracionFic} </p>
-          <p><strong>Cédula:</strong> ${fichaMedica.paciente.cedulaPac}</p>
-          <p><strong>Rol:</strong> ${fichaMedica.paciente.profesionPac}</p>
-          <p><strong>Fecha Nacimiento:</strong>${fichaMedica.paciente.fechaNacimientoPac} </p>
-          <p><strong>Lugar:</strong>${fichaMedica.paciente.lugarPac} </p>
-          <p><strong>Pais:</strong>${fichaMedica.paciente.paisPac} </p>
-          <p><strong>Dirección:</strong>${fichaMedica.paciente.direccionPac} </p>
-          <p><strong>Barrio:</strong>${fichaMedica.paciente.barrioPac} </p>
-          <p><strong>Parroquia:</strong>${fichaMedica.paciente.parroquiaPac} </p>
-          <p><strong>Cantón:</strong>${fichaMedica.paciente.cantonPac} </p>
-          <p><strong>Provincia:</strong>${fichaMedica.paciente.provinciaPac} </p>
-          <p><strong>Teléfono:</strong>${fichaMedica.paciente.telefonoPac} </p>
-          <p><strong>Género:</strong>${fichaMedica.paciente.generoPac} </p>
-          <p><strong>Estado Civil:</strong>${fichaMedica.paciente.estadoCivilPac} </p>
+        <div style="display: flex; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 200px; padding-right: 10px;">
+            <p><strong>Fecha Registro:</strong>${fichaMedica.fechaElaboracion} </p>
+            <p><strong>Cédula:</strong> ${fichaMedica.paciente.cedula}</p>
+            <p><strong>Rol:</strong> ${fichaMedica.paciente.profesion}</p>
+            <p><strong>Fecha Nacimiento:</strong>${fichaMedica.paciente.fechaNacimiento} </p>
+            <p><strong>Lugar:</strong>${fichaMedica.paciente.lugar} </p>
+            <p><strong>Pais:</strong>${fichaMedica.paciente.pais} </p>
+            <p><strong>Dirección:</strong>${fichaMedica.paciente.direccion} </p>
+            <p><strong>Barrio:</strong>${fichaMedica.paciente.barrio} </p>
+            <p><strong>Parroquia:</strong>${fichaMedica.paciente.parroquia} </p>
+            <p><strong>Cantón:</strong>${fichaMedica.paciente.canton} </p>
+            <p><strong>Provincia:</strong>${fichaMedica.paciente.provincia} </p>
+            <p><strong>Teléfono:</strong>${fichaMedica.paciente.telefono} </p>
+            <p><strong>Género:</strong>${fichaMedica.paciente.genero} </p>
+            <p><strong>Estado Civil:</strong>${fichaMedica.paciente.estadoCivil} </p>
+          </div>
+          <div style="flex: 1; min-width: 200px;">
+            <p><strong>Tipo Sangre:</strong>${fichaMedica.paciente.tipoSangre} </p>
+            <p><strong>Carrera:</strong>${fichaMedica.paciente.carrera} </p>
+            <p><strong>Ciclo:</strong>${fichaMedica.paciente.ciclo} </p>
+            <p><strong>Discapacidad:</strong>${fichaMedica.discapacidad.discapacidadG} </p>
+            <p><strong>Tipo:</strong>${fichaMedica.discapacidad.subtipoDis} </p>
+            <p><strong>Porcentaje:</strong>${fichaMedica.discapacidad.porcentajeDis} </p>
+            <p><strong>Carnet CONADIS:</strong>${fichaMedica.discapacidad.carnetCon} </p> 
+            <p><strong>Numero CONADIS:</strong>${fichaMedica.discapacidad.numeroConadis} </p>   
+            <p><strong>Antecedentes:</strong> </p>
+            <p><strong>Alérgia:</strong>${fichaMedica.antecedenteFamiliar.alergiaAnt} </p>
+            <p><strong>Clínico:</strong>${fichaMedica.antecedenteFamiliar.clinicoAnt} </p>
+            <p><strong>Ginecológico:</strong>${fichaMedica.antecedenteFamiliar.ginecologoAnt} </p>
+            <p><strong>Traumatológico:</strong>${fichaMedica.antecedenteFamiliar.traumatologicoAnt} </p>
+            <p><strong>Quirúrgico:</strong>${fichaMedica.antecedenteFamiliar.quirurgicoAnt} </p>
+            <p><strong>Farmacológico:</strong>${fichaMedica.antecedenteFamiliar.farmacologicoAnt} </p>
+          </div>
         </div>
-        <div style="flex: 1; min-width: 200px;">
-          <p><strong>Tipo Sangre:</strong>${fichaMedica.paciente.tipoSangrePac} </p>
-          <p><strong>Carrera:</strong>${fichaMedica.paciente.carreraPac} </p>
-          <p><strong>Ciclo:</strong>${fichaMedica.paciente.cicloPac} </p>
-          <p><strong>Discapacidad:</strong>${fichaMedica.discapacidad.discapacidadG} </p>
-          <p><strong>Tipo:</strong>${fichaMedica.discapacidad.subtipoDis} </p>
-          <p><strong>Porcentaje:</strong>${fichaMedica.discapacidad.porcentajeDis} </p>
-          <p><strong>Carnet CONADIS:</strong>${fichaMedica.discapacidad.carnetCon} </p> 
-          <p><strong>Numero CONADIS:</strong>${fichaMedica.discapacidad.numeroConadis} </p>   
-          <p><strong>Antecedentes:</strong> </p>
-          <p><strong>Alérgia:</strong>${fichaMedica.antecedenteFamiliar.alergiaAnt} </p>
-          <p><strong>Clínico:</strong>${fichaMedica.antecedenteFamiliar.clinicoAnt} </p>
-          <p><strong>Ginecológico:</strong>${fichaMedica.antecedenteFamiliar.ginecologoAnt} </p>
-          <p><strong>Traumatológico:</strong>${fichaMedica.antecedenteFamiliar.traumatologicoAnt} </p>
-          <p><strong>Quirúrgico:</strong>${fichaMedica.antecedenteFamiliar.quirurgicoAnt} </p>
-          <p><strong>Farmacológico:</strong>${fichaMedica.antecedenteFamiliar.farmacologicoAnt} </p>
-        </div>
-      </div>  
       `,
     });
   }
-  //BOTON BUSCAR CEDULA/APELLIDO/CARRERA
-    buscar(): void {
-      if (this.cedulaBusqueda) {
-        this.pacienteService.buscarPorCedula(this.cedulaBusqueda).subscribe(
-          paciente => {
-            if (paciente) {
-              this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-                this.fichaMedicaEncontrada = fichaMedica.filter(ficha => ficha.paciente.cedulaPac === paciente.cedulaPac);
-              });
-            } else {
-              this.fichaMedicaEncontrada = [];
-            }
-          },
-          error => {
-            console.error('Error al buscar el paciente:', error);
+
+  buscar(): void {
+    if (this.cedulaBusqueda) {
+      this.pacienteService.buscarPorCedula(this.cedulaBusqueda).subscribe(
+        paciente => {
+          if (paciente) {
+            this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
+              this.fichaMedicaEncontrada = fichaMedica.filter(ficha => ficha.paciente.cedula === paciente.cedula);
+            });
+          } else {
             this.fichaMedicaEncontrada = [];
           }
-        );
-      } else if (this.apellidoBusqueda) {
-        this.pacienteService.buscarPorApellido(this.apellidoBusqueda).subscribe(
-          paciente => {
-            if (paciente) {
-              this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-                this.fichaMedicaEncontrada = fichaMedica.filter(ficha => ficha.paciente.apellidoPac.toLowerCase().includes(this.apellidoBusqueda.toLowerCase()));
-              });
-            } else {
-              this.fichaMedicaEncontrada = [];
-            }
-          },
-          error => {
-            console.error('Error al buscar el paciente por apellido:', error);
+        },
+        error => {
+          console.error('Error al buscar el paciente:', error);
+          this.fichaMedicaEncontrada = [];
+        }
+      );
+    } else if (this.apellidoBusqueda) {
+      this.pacienteService.buscarPorApellido(this.apellidoBusqueda).subscribe(
+        paciente => {
+          if (paciente) {
+            this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
+              this.fichaMedicaEncontrada = fichaMedica.filter(ficha =>
+                ficha.paciente.apellido.toLowerCase().includes(this.apellidoBusqueda.toLowerCase())
+              );
+            });
+          } else {
             this.fichaMedicaEncontrada = [];
           }
-        );
-      } else if (this.profesionBusqueda) {
-        this.pacienteService.buscarPorProfesion(this.profesionBusqueda).subscribe(
-          paciente => {
-            if (paciente) {
-              this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-                this.fichaMedicaEncontrada = fichaMedica.filter(ficha => ficha.paciente.profesionPac.toLowerCase().includes(this.profesionBusqueda.toLowerCase()));
-              });
-            } else {
-              this.fichaMedicaEncontrada = [];
-            }
-          },
-          error => {
-            console.error('Error al buscar el paciente por profesión:', error);
+        },
+        error => {
+          console.error('Error al buscar el paciente por apellido:', error);
+          this.fichaMedicaEncontrada = [];
+        }
+      );
+    } else if (this.profesionBusqueda) {
+      this.pacienteService.buscarPorProfesion(this.profesionBusqueda).subscribe(
+        paciente => {
+          if (paciente) {
+            this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
+              this.fichaMedicaEncontrada = fichaMedica.filter(ficha =>
+                ficha.paciente.profesion.toLowerCase().includes(this.profesionBusqueda.toLowerCase())
+              );
+            });
+          } else {
             this.fichaMedicaEncontrada = [];
           }
-        );
-      } else {
-        this.fichaMedicaEncontrada = [];
-      }
+        },
+        error => {
+          console.error('Error al buscar el paciente por profesión:', error);
+          this.fichaMedicaEncontrada = [];
+        }
+      );
+    } else {
+      this.fichaMedicaEncontrada = [];
     }
-    
- 
+  }
+
   recargarTabla(): void {
-    //this.fichaMedicaEncontrada  = null;
     this.fichaMedicaEncontrada = [];
     this.cargarFichaMedica();
-    this.cedulaBusqueda = ''; // Limpia el campo 
-  }
-  /// BOTON ELIMINAR
-  //eliminar datos de la base
-  deleteFicha(): void {
-
+    this.cedulaBusqueda = '';
+    this.apellidoBusqueda = '';
+    this.profesionBusqueda = '';
   }
 
+  // Eliminar ficha (sin implementar)
+  deleteFicha(): void {}
 }
-
-

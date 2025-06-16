@@ -55,9 +55,9 @@ export class FormComponent implements OnInit {
 
   public create(): void {
     // En caso de ser docente
-    if (this.fichaMedica.paciente.profesionPac === 'Profesor') {
-      this.fichaMedica.paciente.carreraPac = 'NoAplica';
-      this.fichaMedica.paciente.cicloPac = 'NoAplica';
+    if (this.fichaMedica.paciente.profesion === 'Profesor') {
+      this.fichaMedica.paciente.carrera = 'NoAplica';
+      this.fichaMedica.paciente.ciclo = 'NoAplica';
     }
   
     this.pacienteService.create(this.fichaMedica.paciente).subscribe(paciente => {
@@ -71,16 +71,16 @@ export class FormComponent implements OnInit {
             this.fichaMedica = fichaMedica;
   
             // Si el paciente es femenino, crear la emergencia obstétrica
-            if (this.fichaMedica.paciente.generoPac === 'femenino') {
+            if (this.fichaMedica.paciente.genero === 'femenino') {
               this.emergenciaObstetrica.fichaMedica = fichaMedica;
               this.emergenciaObstetricaService.create(this.emergenciaObstetrica).subscribe(emergencia => {
-                Swal.fire('Ficha médica guardada', `Ficha médica del paciente ${this.fichaMedica.paciente.nombrePac} guardada con éxito`, 'success');
+                Swal.fire('Ficha médica guardada', `Ficha médica del paciente ${this.fichaMedica.paciente.nombre} guardada con éxito`, 'success');
                 this.router.navigate(['/ficha-medica']);
               }, error => {
                 Swal.fire('Error', 'Hubo un problema al guardar la emergencia obstétrica', 'error');
               });
             } else {
-              Swal.fire('Ficha médica guardada', `Ficha médica del paciente ${this.fichaMedica.paciente.nombrePac} guardada con éxito`, 'success');
+              Swal.fire('Ficha médica guardada', `Ficha médica del paciente ${this.fichaMedica.paciente.nombre  } guardada con éxito`, 'success');
               this.router.navigate(['/ficha-medica']);
             }
           }, error => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Doctor } from './doctor';
 import { Observable, of } from 'rxjs';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { Doctor } from '../model/doctor';
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +36,10 @@ export class DoctorService {
     const url = `${this.urlEndPoint}/cedula/${cedula}`;
     return this.http.get<Doctor>(url);
   }
+  
+  login(cedula: string, password: string): Observable<Doctor | null> {
+    const url = `${this.urlEndPoint}/login`;
+    return this.http.post<Doctor | null>(url, { cedula, password }, { headers: this.httpHeaders });
+  }
+
 }

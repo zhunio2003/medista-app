@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Diagnostico } from '../modelo/diagnostico';
+import { Diagnostico } from '../../core/model/diagnostico';
 import { Observable } from 'rxjs';
 
 @Injectable({

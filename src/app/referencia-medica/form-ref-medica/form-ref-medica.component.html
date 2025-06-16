@@ -26,8 +26,8 @@
         <div class="form-group">
           <label for="cedula__doc_ref">CÉDULA</label>
           <select id="cedula_doc_ref" name="cedula_doc_ref" [(ngModel)]="referencia.cedula_doc_ref">
-            <option *ngFor="let doctor of doctores" [value]="doctor.cedulaDoc">
-              {{ doctor.cedulaDoc }}
+            <option *ngFor="let doctor of doctores" [value]="doctor.cedula">
+              {{ doctor.cedula }}
             </option>
           </select>
         </div>
@@ -166,16 +166,16 @@
         <div class="form-group">
           <label for="nombre_profesional">NOMBRE DEL PROFESIONAL</label>
           <select id="nombre_doc_ref" name="nombre_doc_ref" [(ngModel)]="referencia.nombre_doc_ref">
-            <option *ngFor="let doctor of doctores" [value]="doctor.nombreDoc">
-              {{ doctor.nombreDoc }} {{doctor.apellidoDoc}}
+            <option *ngFor="let doctor of doctores" [value]="doctor.nombre">
+              {{ doctor.nombre }} {{doctor.apellido}}
             </option>
           </select>
         </div>
         <div class="form-group">
           <label for="codigo_msp_ref">CÓDIGO MSP</label>
           <select id="codigo_msp_ref" name="codigo_msp_ref" [(ngModel)]="referencia.codigo_msp_ref">
-            <option *ngFor="let doctor of doctores" [value]="doctor.codigoMspDoc">
-              {{ doctor.codigoMspDoc }}
+            <option *ngFor="let doctor of doctores" [value]="doctor.codigoMsp">
+              {{ doctor.codigoMsp }}
             </option>
           </select>
         </div>

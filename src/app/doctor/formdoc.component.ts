@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Doctor } from "./doctor";
-import { DoctorService } from "./doctor.service";
+import { Doctor } from "../core/model/doctor";
+import { DoctorService } from "../core/service/doctor.service";
 import Swal from "sweetalert2";
 
 @Component({
@@ -27,7 +27,7 @@ export class FormDocComponent implements OnInit{
         this.doctorService.create(this.doctor)
         .subscribe(
            doctor=> {this.router.navigate(['/doctor'])
-           Swal.fire('Doctor guardado',  `Doctor ${this.doctor.nombreDoc} guardado con exito`,'success')
+           Swal.fire('Doctor guardado',  `Doctor ${this.doctor.nombre} guardado con exito`,'success')
            this.editMode = false; // Deshabilitar el modo de edición después de guardar los cambios
            }
           )

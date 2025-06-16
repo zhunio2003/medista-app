@@ -1,5 +1,5 @@
-import { AtencionMedica } from "./atencion-medica";
-import { SignoVital } from "./signo-vital";
+import { AtencionMedica } from "../../core/model/atencion-medica";
+import { SignoVital } from "../../core/model/signo-vital";
 
 export class AtencionSigno {
     idAts: number = 0;

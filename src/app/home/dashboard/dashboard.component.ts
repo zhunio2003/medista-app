@@ -39,8 +39,8 @@ export class DashboardComponent implements AfterViewInit, OnInit {
 
   ContPacProf(): void {
     this.pacienteService.getPacientes().subscribe(pacientes => {
-      this.totalProf = pacientes.filter(p => p.profesionPac === 'Profesor').length;
-      this.totalEst = pacientes.filter(p => p.profesionPac === 'Estudiante').length;
+      this.totalProf = pacientes.filter(p => p.profesion === 'Profesor').length;
+      this.totalEst = pacientes.filter(p => p.profesion === 'Estudiante').length;
     });
   }
 

@@ -7,6 +7,6 @@ export class FichaMedica {
     paciente: Paciente = new Paciente();
     discapacidad: Discapacidad = new Discapacidad();
     antecedenteFamiliar: AntecedenteFamiliar = new AntecedenteFamiliar();
-    fechaElaboracionFic: Date = new Date();
+    fechaElaboracion: Date = new Date();
     
 }

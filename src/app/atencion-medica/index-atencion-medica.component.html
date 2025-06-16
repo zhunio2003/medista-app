@@ -14,21 +14,19 @@
           <tr>
             <th>Id</th>
             <th>CI</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Carrera</th>
+            <th>Paciente</th>
+            <th>Motivo</th>
             <th>Fecha Atención</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let atencionMedica of atencionesMedicas">
-            <td>{{atencionMedica.idAte}}</td>  
-            <td>{{atencionMedica.fichaMedica.paciente.cedulaPac}}</td> 
-            <td>{{atencionMedica.fichaMedica.paciente.nombrePac}}</td>
-            <td>{{atencionMedica.fichaMedica.paciente.apellidoPac}}</td>
-            <td>{{atencionMedica.fichaMedica.paciente.carreraPac}}</td>
-            <td>{{atencionMedica.fechaAtencionAte}}</td>
+            <td>{{atencionMedica.id}}</td>  
+            <td>{{atencionMedica.fichaMedica.cedula}}</td>  
+            <td>{{atencionMedica.fichaMedica.paciente}}</td> 
+            <td>{{atencionMedica.motivoAte}}</td>
+            <td>{{atencionMedica.fechaAtencionAte | date:'dd/MM/yyyy HH:mm'}}</td>
 
             <td>
               <button type="button" name="button" class="btn btn-primary mx-4" (click)="verDetalles(atencionMedica)">Ver</button>

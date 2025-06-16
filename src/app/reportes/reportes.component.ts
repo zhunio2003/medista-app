@@ -54,7 +54,7 @@ export class ReportesComponent implements OnInit {
     if (this.cedulaBusqueda) {
       this.atenmedservice.getAten().subscribe(
         atenciones => {
-          this.atenciones = atenciones.filter(atencion => atencion.fichaMedica.paciente.cedulaPac === this.cedulaBusqueda);
+          this.atenciones = atenciones.filter(atencion => atencion.fichaMedica.paciente.cedula === this.cedulaBusqueda);
           if (this.atenciones.length > 0) {
             this.pacEncontrado = this.atenciones[0].fichaMedica.paciente;
             this.fichaMedicaEncontrada = this.atenciones.map(atencion => atencion.fichaMedica);
@@ -73,7 +73,7 @@ export class ReportesComponent implements OnInit {
       this.atenmedservice.getAten().subscribe(
         atenciones => {
           this.atenciones = atenciones.filter(atencion =>
-            atencion.fichaMedica.paciente.profesionPac.toLowerCase().includes(this.profesionBusqueda.toLowerCase())
+            atencion.fichaMedica.paciente.profesion.toLowerCase().includes(this.profesionBusqueda.toLowerCase())
           );
           if (this.atenciones.length > 0) {
             this.pacEncontrado = this.atenciones[0].fichaMedica.paciente;
@@ -93,7 +93,7 @@ export class ReportesComponent implements OnInit {
       this.atenmedservice.getAten().subscribe(
         atenciones => {
           this.atenciones = atenciones.filter(atencion =>
-            atencion.fichaMedica.paciente.generoPac.toLowerCase() === this.generoBusqueda.toLowerCase()
+            atencion.fichaMedica.paciente.genero.toLowerCase() === this.generoBusqueda.toLowerCase()
           );
           if (this.atenciones.length > 0) {
             this.pacEncontrado = this.atenciones[0].fichaMedica.paciente;
@@ -113,7 +113,7 @@ export class ReportesComponent implements OnInit {
       this.atenmedservice.getAten().subscribe(
         atenciones => {
           this.atenciones = atenciones.filter(atencion =>
-            atencion.fichaMedica.paciente.carreraPac.toLowerCase().includes(this.carreraBusqueda.toLowerCase())
+            atencion.fichaMedica.paciente.carrera.toLowerCase().includes(this.carreraBusqueda.toLowerCase())
           );
           if (this.atenciones.length > 0) {
             this.pacEncontrado = this.atenciones[0].fichaMedica.paciente;
@@ -156,11 +156,11 @@ export class ReportesComponent implements OnInit {
     const encabezado = ["#", "Nombre", "Cedula", "Motivo", "Fecha de Nacimiento", "Carrera", "Fecha de Visita", "Receta"];
     const cuerpo = this.atenciones.map((atenciones, index) => [
       index + 1,
-      atenciones.fichaMedica.paciente.nombrePac + ' ' + atenciones.fichaMedica.paciente.apellidoPac,
-      atenciones.fichaMedica.paciente.cedulaPac,
+      atenciones.fichaMedica.paciente.nombre + ' ' + atenciones.fichaMedica.paciente.apellido,
+      atenciones.fichaMedica.paciente.cedula,
       atenciones.motivoAte,
-      atenciones.fichaMedica.paciente.fechaNacimientoPac,
-      atenciones.fichaMedica.paciente.carreraPac,
+      atenciones.fichaMedica.paciente.fechaNacimiento,
+      atenciones.fichaMedica.paciente.carrera,
       atenciones.fechaAtencionAte,
       atenciones.tratamientoAte
     ]);
