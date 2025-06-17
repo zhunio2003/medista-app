@@ -243,7 +243,7 @@ export class FormAtencionMedicaComponent implements OnInit {
       if (examen.archivoPdfFile) {
         try {
           const base64 = await this.convertToBase64(examen.archivoPdfFile);
-          examen.archivoPdf = base64; // ✅ ahora sí va al backend
+          examen.archivoPdf = base64; 
         } catch (error) {
           console.error(`Error al convertir PDF a base64 para el examen ${examen.nombre}`, error);
         }
