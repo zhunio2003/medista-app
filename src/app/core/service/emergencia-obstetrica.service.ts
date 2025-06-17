@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EmergenciaObstetrica } from '../modelo/emergencia-obstetrica';
+import { EmergenciaObstetrica } from '../model/emergencia-obstetrica';
 import { Observable } from 'rxjs';
 
 @Injectable({

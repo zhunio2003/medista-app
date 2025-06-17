@@ -5,12 +5,12 @@ import Swal from 'sweetalert2';
 
 import { Doctor } from '../../core/model/doctor';
 import { ReferenciaMedica } from '../referencia-medica';
-import { Diagnostico } from '../diagnostico/diagnostico';
-import { Enfermedades } from '../../enfermedades/Enfermedades';
-import { EnfermedadesService } from '../../enfermedades/enfermedades.service';
+import { Enfermedades } from '../../core/model/Enfermedades';
+import { EnfermedadesService } from '../../core/service/enfermedades.service';
 import { DoctorService } from '../../core/service/doctor.service';
-import { AtencionMedicaService } from '../../atencion-medica/service/atencion-medica.service';
-import { DiagnosticoService } from '../diagnostico/diagnostico.service';
+import { AtencionMedicaService } from '../../core/service/atencion-medica.service';
+import { DiagnosticoService } from '../../core/service/diagnostico.service';
+import { Diagnostico } from '../../core/model/diagnostico';
 
 @Component({
   selector: 'app-form-ref-medica',
@@ -103,13 +103,13 @@ export class FormRefMedicaComponent implements OnInit {
     console.log('Creando diagnósticos para referenciaId:', referenciaId);
   
     // Asegúrate de que no haya diagnósticos vacíos o nulos
-    const validDiagnosticos = this.referencia.diagnosticos.filter(diagnostico => diagnostico && diagnostico.diagnostico_dia);
+    const validDiagnosticos = this.referencia.diagnosticos.filter(diagnostico => diagnostico && diagnostico.descripcion);
   
     validDiagnosticos.forEach(diagnostico => {
       console.log('Diagnóstico:', diagnostico);
   
       if (diagnostico) {
-        diagnostico.referencia = { id_ref: referenciaId };
+        // diagnostico. = { id_ref: referenciaId };
         this.diagnosticoService.create(diagnostico).subscribe({
           next: (createdDiagnostico) => {
             console.log('Diagnóstico creado:', createdDiagnostico);
@@ -177,7 +177,7 @@ export class FormRefMedicaComponent implements OnInit {
   
   onSearch(index: number) {
     // Proporcionar un valor predeterminado si searchTerm es undefined
-    const searchTerm = this.referencia.diagnosticos[index].diagnostico_dia || '';
+    const searchTerm = this.referencia.diagnosticos[index].enfermedad.codigo || '';
     this.filteredEnfermedades[index] = this.enfermedades.filter(enf => 
       enf.nombreEnf.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -186,15 +186,15 @@ export class FormRefMedicaComponent implements OnInit {
 
   selectEnfermedad(enfermedad: Enfermedades, index: number) {
     
-    this.referencia.diagnosticos[index].diagnostico_dia = enfermedad.nombreEnf;
-    this.referencia.diagnosticos[index].codigo_dia = enfermedad.codigoEnf; // Actualiza el código CIE 10
+    this.referencia.diagnosticos[index].enfermedad.nombre = enfermedad.nombreEnf;
+    this.referencia.diagnosticos[index].enfermedad.codigo = enfermedad.codigoEnf; // Actualiza el código CIE 10
     this.showSuggestions[index] = false;
   }
 
   onFocus(index: number) {
-    if (this.referencia.diagnosticos[index].searchTerm?.length > 0 || this.filteredEnfermedades[index].length > 0) {
+    /*if (this.referencia.diagnosticos[index].searchTerm?.length > 0 || this.filteredEnfermedades[index].length > 0) {
       this.showSuggestions[index] = true;
-    }
+    }*/
     //this.showSuggestions[index] = true;
 
   }

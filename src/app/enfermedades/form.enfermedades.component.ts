@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
-import { Enfermedades } from './Enfermedades';
-import { EnfermedadesService } from './enfermedades.service';
+import { Enfermedades } from '../core/model/Enfermedades';
+import { EnfermedadesService } from '../core/service/enfermedades.service';
 import Swal from "sweetalert2";
 
 @Component({

@@ -1,26 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AtencionMedica } from '../core/model/atencion-medica';
-import { Paciente } from '../ficha-medica/modelo/paciente';
-import { FichaMedicaService } from '../ficha-medica/servicio/ficha-medica.service';
+import { FichaMedicaService } from '../core/service/ficha-medica.service';
 import { PacienteService } from '../reportes/paciente.service';
-import { FichaMedica } from '../ficha-medica/modelo/ficha-medica';
 import { ExamenFisico } from '../core/model/examen-fisico';
-import { AtencionSigno } from './modelo/atencion-signo';
 import { ExamenComplementario } from '../core/model/examen-complementario';
 import Swal from 'sweetalert2';
 import { SignoVital } from '../core/model/signo-vital';
-import { SignoVitalService } from './service/signo-vital.service';
-import { Enfermedades } from '../enfermedades/Enfermedades';
+import { SignoVitalService } from '../core/service/signo-vital.service';
+import { Enfermedades } from '../core/model/Enfermedades';
 import { Diagnostico } from '../core/model/diagnostico';
-import { DiagnosticoService } from './service/diagnostico.service';
-import { EmergenciaObstetrica } from './modelo/emergencia-obstetrica';
-import { EmergenciaObstetricaService } from './service/emergencia-obstetrica.service';
-import { ExamenComplementarioService } from './service/examen-complementario.service';
-import { EnfermedadesService } from '../enfermedades/enfermedades.service';
-import { AtencionMedicaService } from './service/atencion-medica.service';
+import { DiagnosticoService } from '../core/service/diagnostico.service';
+import { EmergenciaObstetrica } from '../core/model/emergencia-obstetrica';
+import { EmergenciaObstetricaService } from '../core/service/emergencia-obstetrica.service';
+import { ExamenComplementarioService } from '../core/service/examen-complementario.service';
+import { EnfermedadesService } from '../core/service/enfermedades.service';
+import { AtencionMedicaService } from '../core/service/atencion-medica.service';
 import { DoctorService } from '../core/service/doctor.service';
 import { Doctor } from '../core/model/doctor';
+import { Paciente } from '../ficha-medica/modelo/paciente';
+import { FichaMedica } from '../ficha-medica/modelo/ficha-medica';
 
 @Component({
   selector: 'app-form-atencion-medica',

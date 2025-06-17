@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ElementRef, ViewChild, OnInit, inject } from 
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { Chart, ChartData, ChartOptions } from 'chart.js/auto';
-import { PacienteService } from '../../ficha-medica/servicio/paciente.service';
+import { PacienteService } from '../../core/service/paciente.service';
 import { DataService } from './data.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 

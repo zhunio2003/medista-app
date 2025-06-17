@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import Swal from "sweetalert2";
+import { DiscapacidadService } from "../core/service/discapacidad.service";
+import { PacienteService } from "../core/service/paciente.service";
+import { FichaMedicaService } from "../core/service/ficha-medica.service";
+import { AntecedenteFamiliarService } from "../core/service/antecedente-familiar.service";
+import { EmergenciaObstetrica } from "../core/model/emergencia-obstetrica";
+import { EmergenciaObstetricaService } from "../core/service/emergencia-obstetrica.service";
 import { FichaMedica } from "./modelo/ficha-medica";
-import { DiscapacidadService } from "./servicio/discapacidad.service";
-import { PacienteService } from "./servicio/paciente.service";
-import { FichaMedicaService } from "./servicio/ficha-medica.service";
-import { AntecedenteFamiliarService } from "./servicio/antecedente-familiar.service";
-import { EmergenciaObstetrica } from "../atencion-medica/modelo/emergencia-obstetrica";
-import { EmergenciaObstetricaService } from "../atencion-medica/service/emergencia-obstetrica.service";
 
 @Component({
   selector: 'app-form',

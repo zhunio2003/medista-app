@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Enfermedades } from './Enfermedades';
+import { Enfermedades } from '../model/Enfermedades';
 import { Observable, of } from 'rxjs';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 

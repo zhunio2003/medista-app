@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PacienteService } from './servicio/paciente.service';
-import { FichaMedicaService } from './servicio/ficha-medica.service';
-import { Paciente } from './modelo/paciente';
-import { FichaMedica } from './modelo/ficha-medica';
+import { PacienteService } from '../core/service/paciente.service';
+import { FichaMedicaService } from '../core/service/ficha-medica.service';
 import Swal from 'sweetalert2';
+import { FichaMedica } from './modelo/ficha-medica';
 
 @Component({
   selector: 'app-ficha-medica',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PacienteService } from './paciente.service';
-import { Paciente } from '../ficha-medica/modelo/paciente';
 import { AtenMedService } from './atenmed.service';
 import { AtencMed } from './atenmed';
 import { ImpresionService } from './impresion.service';
+import { Paciente } from '../ficha-medica/modelo/paciente';
 import { FichaMedica } from '../ficha-medica/modelo/ficha-medica';
 
 

@@ -27,11 +27,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
   // importamos el service
-  import { PacienteService } from './ficha-medica/servicio/paciente.service';
-  import { FichaMedicaService } from './ficha-medica/servicio/ficha-medica.service';
   import { DoctorService } from './core/service/doctor.service';
   import { ReferenciaMedicaService } from './referencia-medica/referencia-medica.service';
-  import { EnfermedadesService } from './enfermedades/enfermedades.service';
+  import { EnfermedadesService } from './core/service/enfermedades.service';
 
 // ventana de registro paciente
 import { FormComponent } from './ficha-medica/form.component';
@@ -47,9 +45,10 @@ import { SettingService } from './setting/setting.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormAtencionMedicaComponent } from './atencion-medica/form-atencion-medica.component';
-import { DiagnosticoComponent } from './referencia-medica/diagnostico/diagnostico.component';
 import { InstitutoComponent } from './setting/instituto.component';
 import { LayoutComponent } from './layout/layout.component';
+import { PacienteService } from './reportes/paciente.service';
+import { FichaMedicaService } from './core/service/ficha-medica.service';
 
 
 const routes: Routes = [
@@ -107,12 +106,10 @@ const routes: Routes = [
     InstitutoComponent,
     LoginComponent,
     FormComponent,
-    FormRefMedicaComponent,
     FormDocComponent,
     FormEnfermedadesComponent,
     DashboardComponent,
     FormAtencionMedicaComponent,
-    DiagnosticoComponent,
     LayoutComponent    
   ],
   imports: [

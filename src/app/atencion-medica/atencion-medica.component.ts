@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { AtencionMedica } from '../core/model/atencion-medica';
-import { AtencionMedicaService } from './service/atencion-medica.service';
-import { FichaMedicaService } from '../ficha-medica/servicio/ficha-medica.service';
+import { AtencionMedicaService } from '../core/service/atencion-medica.service';
+import { FichaMedicaService } from '../core/service/ficha-medica.service';
 import { PacienteService } from '../reportes/paciente.service';
-import { Paciente } from '../ficha-medica/modelo/paciente';
 import Swal from 'sweetalert2';
+import { Paciente } from '../ficha-medica/modelo/paciente';
 
 @Component({
   selector: 'app-atencion-medica',

@@ -1,7 +1,6 @@
 import { AtencionMedica } from "../core/model/atencion-medica";
+import { Diagnostico } from "../core/model/diagnostico";
 import { Doctor } from "../core/model/doctor";
-import { FichaMedica } from "../ficha-medica/modelo/ficha-medica";
-import { Diagnostico } from "./diagnostico/diagnostico";
 
 
 export class ReferenciaMedica {

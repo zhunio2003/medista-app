@@ -3,7 +3,7 @@ import { ReferenciaMedicaService } from './referencia-medica.service';
 import { ReferenciaMedica } from './referencia-medica';
 import Swal from 'sweetalert2';
 import { AtencionMedica } from '../core/model/atencion-medica';
-import { AtencionMedicaService } from '../atencion-medica/service/atencion-medica.service';
+import { AtencionMedicaService } from '../core/service/atencion-medica.service';
 
 @Component({
   selector: 'app-referencia-medica',
@@ -75,10 +75,10 @@ export class ReferenciaMedicaComponent implements OnInit {
   verDetalles(referencia: ReferenciaMedica): void {
     const diagnosticosHtml = referencia.diagnosticos.map(diagnostico => `
       <li>
-      <td>ID: ${diagnostico.id_dia}</td>
-      <td>Diagnostico: ${diagnostico.diagnostico_dia || 'No especificado'}</td>
-      <td>Codigo: ${diagnostico.codigo_dia || 'No especificado'}</td>
-      <td>Tipo: ${diagnostico.estado_dia ? 'Presuntivo' : 'Definitivo'}</td>
+      <td>ID: ${diagnostico.descripcion}</td>
+      <td>Diagnostico: ${diagnostico.descripcion || 'No especificado'}</td>
+      <td>Codigo: ${diagnostico.enfermedad.codigo || 'No especificado'}</td>
+      <td>Tipo: ${diagnostico.estado ? 'Presuntivo' : 'Definitivo'}</td>
     </li>
   `).join('');
 
