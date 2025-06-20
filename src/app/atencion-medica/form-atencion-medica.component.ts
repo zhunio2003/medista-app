@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AtencionMedica } from '../core/model/atencion-medica';
 import { FichaMedicaService } from '../core/service/ficha-medica.service';
 import { PacienteService } from '../reportes/paciente.service';
-import { ExamenFisico } from '../core/model/examen-fisico';
 import { ExamenComplementario } from '../core/model/examen-complementario';
 import Swal from 'sweetalert2';
 import { SignoVital } from '../core/model/signo-vital';
@@ -45,6 +44,10 @@ export class FormAtencionMedicaComponent implements OnInit {
   filteredEnfermedades: { [key: number]: Enfermedades[] } = {};
   searchQuery: string = '';
 
+  // Variables para animaciones
+  isSearching: boolean = false;
+  patientFound: boolean = false;
+  showSuccessAnimation: boolean = false;
 
   constructor(
     private router: Router,
@@ -58,8 +61,6 @@ export class FormAtencionMedicaComponent implements OnInit {
     private diagnosticoService: DiagnosticoService,
     private signoVitalService: SignoVitalService,
     private doctorService: DoctorService
-
-
   ) { }
 
   // metodo regresar ventana anterior
@@ -71,9 +72,10 @@ export class FormAtencionMedicaComponent implements OnInit {
     this.recuperarEnfermedades();
     const doctorGuardado = localStorage.getItem('doctorLogueado');
     if (doctorGuardado) {
-      this.doctor = JSON.parse(doctorGuardado); // Ya tienes al doctor aquí
+      this.doctor = JSON.parse(doctorGuardado);
     }
   }
+
   updateTotalGlasgow(): void {
     const o = Number(this.atencionMedica.signosVitales.glasgowOcular) || 0;
     const v = Number(this.atencionMedica.signosVitales.glasgowVerbal) || 0;
@@ -81,34 +83,63 @@ export class FormAtencionMedicaComponent implements OnInit {
     this.atencionMedica.signosVitales.glasgowTotal = o + v + m;
   }
 
-
   cargarFichaMedica(): void {
     this.activateRouter.params.subscribe(params => {
       let id = params['id']
       if (id) {
         this.fichaMedicaService.getFichas(id).subscribe((fichaMedica) => this.fichaMedica = fichaMedica)
-        this.editMode = true; // Deshabilitar el modo de edición
+        this.editMode = true;
       }
     })
   }
 
   buscar(): void {
     if (this.cedulaBusqueda) {
+      this.isSearching = true;
+      this.patientFound = false;
+      this.showSuccessAnimation = false;
+
       this.pacienteService.buscarPorCedula(this.cedulaBusqueda).subscribe(
         paciente => {
           console.log('Paciente encontrado:', paciente);
           this.pacienteEncontrado = paciente;
+          this.isSearching = false;
+          this.patientFound = true;
+          this.showSuccessAnimation = true;
+
+          // Animate success
+          setTimeout(() => {
+            this.showSuccessAnimation = false;
+          }, 2000);
 
           this.buscarFicha();
-
         },
         error => {
           console.error('Error al buscar al paciente:', error);
           this.pacienteEncontrado = null;
+          this.isSearching = false;
+          this.patientFound = false;
+          
+          // Show error message with SweetAlert2
+          Swal.fire({
+            title: '¡Paciente no encontrado!',
+            text: 'No se encontró ningún paciente con esa cédula.',
+            icon: 'warning',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#1e40af',
+            background: '#ffffff',
+            color: '#1e40af'
+          });
         }
       );
     } else {
-      alert('Por favor ingresa una cédula.');
+      Swal.fire({
+        title: 'Campo requerido',
+        text: 'Por favor ingresa una cédula para buscar.',
+        icon: 'info',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#1e40af'
+      });
     }
   }
 
@@ -117,14 +148,8 @@ export class FormAtencionMedicaComponent implements OnInit {
       this.fichaMedicaService.getFichaPaciente(this.pacienteEncontrado.id).subscribe(
         fichaMedica => {
           this.fichaMedica = fichaMedica;
-
           this.atencionMedica.fichaMedica.cedula = this.fichaMedica.paciente.cedula;
           this.atencionMedica.fichaMedica.paciente = `${fichaMedica.paciente.apellido} ${fichaMedica.paciente.nombre}`;
-
-          /*if (fichaMedica.paciente.genero === 'femenino' || fichaMedica.paciente.genero === 'F') {
-            this.buscarEmergenciObstetrica();
-          }*/
-
         },
         error => {
           console.error('Error al buscar al paciente:', error);
@@ -135,7 +160,6 @@ export class FormAtencionMedicaComponent implements OnInit {
       console.error('No se puede buscar ficha: paciente no encontrado.');
     }
   }
-
 
   buscarEmergenciObstetrica(): void {
     if (this.fichaMedica) {
@@ -156,16 +180,14 @@ export class FormAtencionMedicaComponent implements OnInit {
 
   inicializarSignoAtencion() {
     if (this.signosVitales.length > 0) {
-
+      // Logic here
     }
-
   }
 
   recuperarSignosVitales(): void {
     this.signoVitalService.getSignosVitales().subscribe(signosVitales => {
       signosVitales = this.signosVitales = signosVitales;
       console.log("Se ha recuperado " + this.signosVitales.length + " signos vitales.")
-
     });
   }
 
@@ -173,14 +195,8 @@ export class FormAtencionMedicaComponent implements OnInit {
     this.enfermedadesService.getEnfermedades().subscribe(enfermedades => {
       enfermedades = this.enfermedades = enfermedades;
       console.log("Se ha recuperado " + this.enfermedades.length + " enfermedades.")
-
     });
-
-
   }
-
-
-
 
   onFileChange(event: any, index: number) {
     const file = event.target.files[0];
@@ -188,9 +204,6 @@ export class FormAtencionMedicaComponent implements OnInit {
       this.atencionMedica.examenesComplementarios[index].archivoPdfFile = file;
     }
   }
-
-
-
 
   filterEnfermedades(event: any, index: number): void {
     const query = event.target.value.toLowerCase();
@@ -220,10 +233,14 @@ export class FormAtencionMedicaComponent implements OnInit {
 
   async create(): Promise<void> {
     this.atencionMedica.fechaAtencionAte = new Date();
-    // delete this.atencionMedica.id;  // ✅ Elimina el campo para que Mongo lo genere
 
     if (!this.fichaMedica || !this.doctor) {
-      Swal.fire('Error', 'Faltan datos del doctor o ficha médica', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: 'Faltan datos del doctor o ficha médica',
+        icon: 'error',
+        confirmButtonColor: '#dc2626'
+      });
       return;
     }
 
@@ -252,24 +269,29 @@ export class FormAtencionMedicaComponent implements OnInit {
     // Crear atención médica en MongoDB
     this.atencionMedicaService.create(this.atencionMedica).subscribe(
       () => {
-        Swal.fire('Atención médica guardada correctamente');
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'Atención médica guardada correctamente',
+          icon: 'success',
+          confirmButtonColor: '#16a34a'
+        });
         this.router.navigate(['/atencion-medica']);
       },
       error => {
         console.error('Error al guardar atención médica:', error);
-        Swal.fire('Error al guardar', 'Revisa los datos ingresados', 'error');
+        Swal.fire({
+          title: 'Error al guardar',
+          text: 'Revisa los datos ingresados',
+          icon: 'error',
+          confirmButtonColor: '#dc2626'
+        });
       }
     );
   }
 
-
-
-
-
   addDiagnostico(): void {
     const newDiagnostico = new Diagnostico();
     this.atencionMedica.diagnosticos.push(newDiagnostico);
-
   }
 
   eliminarDiagnostico(index: number) {
@@ -283,7 +305,4 @@ export class FormAtencionMedicaComponent implements OnInit {
   eliminarExamenComplementario(index: number) {
     this.atencionMedica.examenesComplementarios.splice(index, 1);
   }
-
-
-
 }

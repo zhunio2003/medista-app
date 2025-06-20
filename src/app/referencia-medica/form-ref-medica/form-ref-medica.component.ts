@@ -1,16 +1,13 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenciaMedicaService } from '../referencia-medica.service';
-import Swal from 'sweetalert2';
-
-import { Doctor } from '../../core/model/doctor';
-import { ReferenciaMedica } from '../referencia-medica';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ReferenciaMedica } from '../../core/model/referencia-medica';
+import { FichaMedicaService } from '../../core/service/ficha-medica.service';
+import { PacienteService } from '../../core/service/paciente.service';
+import { Diagnostico } from '../../core/model/diagnostico';
 import { Enfermedades } from '../../core/model/Enfermedades';
 import { EnfermedadesService } from '../../core/service/enfermedades.service';
-import { DoctorService } from '../../core/service/doctor.service';
-import { AtencionMedicaService } from '../../core/service/atencion-medica.service';
-import { DiagnosticoService } from '../../core/service/diagnostico.service';
-import { Diagnostico } from '../../core/model/diagnostico';
+import { ReferenciaMedicaService } from '../../core/service/referencia-medica.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-ref-medica',
@@ -18,206 +15,161 @@ import { Diagnostico } from '../../core/model/diagnostico';
   styleUrls: ['./form-ref-medica.component.css']
 })
 export class FormRefMedicaComponent implements OnInit {
+  referencia: ReferenciaMedica = new ReferenciaMedica();
+  enfermedades: Enfermedades[] = [];
+  filteredEnfermedades: { [key: number]: Enfermedades[] } = {};
 
-  public referencia: ReferenciaMedica = new ReferenciaMedica()
-  public enfermedades: Enfermedades[] = [];
-  public doctores: Doctor[] = []
-  //public searchTerm: string = '';
-  public filteredEnfermedades: { [key: number]: Enfermedades[] } = {};
-  public showSuggestions: { [key: number]: boolean } = {};
-  public activeEnfermedad: Enfermedades | null = null;
-  public atencionesMedicas: any[] = [];
-  editMode: boolean = false;
+  cedulaBusqueda: string = '';
+  pacienteEncontrado: any = null;
+  fichaMedica: any = null;
+  isSearching: boolean = false;
+  patientFound: boolean = false;
+  showSuccessAnimation: boolean = false;
 
   constructor(
-    private referenciaService: ReferenciaMedicaService,
-    private enfermedadesService: EnfermedadesService,
     private router: Router,
-    private activateRouter: ActivatedRoute,
-    private doctorService: DoctorService,
-    private atencionMedicaService: AtencionMedicaService,
-    private diagnosticoService: DiagnosticoService // Asegúrate de tener este servicio
+    private referenciaService: ReferenciaMedicaService,
+    private fichaMedicaService: FichaMedicaService,
+    private pacienteService: PacienteService,
+    private enfermedadesService: EnfermedadesService
+  ) {}
 
-  ) {
-    this.referencia.diagnosticos = []; // diagnósticos siempre esté inicializado
-  }
-  // Método para manejar la selección de Atención Médica
-  onAtencionMedicaChange(event: any): void {
-    const selectedValue = Number(event.target.value); // Convierte el valor a número
-    this.referencia.atencionMedica = this.atencionesMedicas.find(atencion => atencion.idAte === selectedValue) || null;
+  ngOnInit(): void {
+    this.recuperarEnfermedades();
+    const doctorGuardado = localStorage.getItem('doctorLogueado');
+    if (doctorGuardado) {
+      const doc = JSON.parse(doctorGuardado);
+      this.referencia.doctor.id = doc.id;
+      this.referencia.doctor.nombre = `${doc.nombre} ${doc.apellido}`;
+      this.referencia.doctor.cedula = doc.cedula;
+    }
   }
 
-  cancelar() {
+  recuperarEnfermedades(): void {
+    this.enfermedadesService.getEnfermedades().subscribe(enfermedades => {
+      this.enfermedades = enfermedades;
+    });
+  }
+
+  buscar(): void {
+    if (this.cedulaBusqueda) {
+      this.isSearching = true;
+      this.pacienteEncontrado = null;
+      this.fichaMedica = null;
+
+      this.pacienteService.buscarPorCedula(this.cedulaBusqueda).subscribe(
+        paciente => {
+          this.pacienteEncontrado = paciente;
+          this.isSearching = false;
+          this.patientFound = true;
+          this.showSuccessAnimation = true;
+
+          setTimeout(() => {
+            this.showSuccessAnimation = false;
+          }, 2000);
+
+          this.buscarFicha();
+        },
+        error => {
+          this.isSearching = false;
+          this.patientFound = false;
+          Swal.fire({
+            title: '¡Paciente no encontrado!',
+            text: 'No se encontró ningún paciente con esa cédula.',
+            icon: 'warning',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#1e40af'
+          });
+        }
+      );
+    } else {
+      Swal.fire({
+        title: 'Campo requerido',
+        text: 'Por favor ingresa una cédula para buscar.',
+        icon: 'info',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#1e40af'
+      });
+    }
+  }
+
+  buscarFicha(): void {
+    if (this.pacienteEncontrado) {
+      this.fichaMedicaService.getFichaPaciente(this.pacienteEncontrado.id).subscribe(
+        ficha => {
+          this.fichaMedica = ficha;
+          this.referencia.fichaMedica.id = ficha.idFic;
+          this.referencia.fichaMedica.cedula = ficha.paciente.cedula;
+          this.referencia.fichaMedica.paciente = `${ficha.paciente.apellido} ${ficha.paciente.nombre}`;
+        },
+        error => {
+          console.error('Error al obtener ficha médica', error);
+        }
+      );
+    }
+  }
+
+  filterEnfermedades(event: any, index: number): void {
+    const query = event.target.value.toLowerCase();
+    if (query.length > 0) {
+      this.filteredEnfermedades[index] = this.enfermedades.filter(enfermedad =>
+        enfermedad.nombreEnf.toLowerCase().includes(query)
+      );
+    } else {
+      this.filteredEnfermedades[index] = [];
+    }
+  }
+
+  selectEnfermedad(enfermedad: Enfermedades, index: number): void {
+    this.referencia.diagnosticos[index].enfermedad.nombre = enfermedad.nombreEnf;
+    this.referencia.diagnosticos[index].enfermedad.codigo = enfermedad.codigoEnf;
+    this.filteredEnfermedades[index] = [];
+  }
+
+  addDiagnostico(): void {
+    this.referencia.diagnosticos.push(new Diagnostico());
+  }
+
+  eliminarDiagnostico(index: number): void {
+    this.referencia.diagnosticos.splice(index, 1);
+  }
+
+  cancelar(): void {
     this.router.navigate(['/referencia-medica']);
   }
 
   create(): void {
-    if (!this.referencia.atencionMedica) {  // Verifica si no se ha seleccionado una atención médica
-      Swal.fire('Error', 'Por favor seleccione una atención médica.', 'error');
+    if (!this.fichaMedica || !this.pacienteEncontrado) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Faltan datos del paciente o ficha médica',
+        icon: 'error',
+        confirmButtonColor: '#dc2626'
+      });
       return;
     }
 
-    console.log('Referencia a enviar:', this.referencia);
+    this.referencia.fecha = new Date().toISOString().substring(0, 10);
 
-    // Inicializa diagnósticos si no está definido
-    if (!this.referencia.diagnosticos) {
-      this.referencia.diagnosticos = [];
-    }
-
-
-    this.referenciaService.create(this.referencia)
-      .subscribe({
-        next: referencia => {
-          this.router.navigate(['/referencia-medica']);
-          Swal.fire('Referencia Médica guardada', `Referencia Médica ${this.referencia.establecimiento_ref} guardada con éxito`, 'success');
-          this.editMode = false;
-
-          // Aquí obtenemos el ID de la referencia creada
-          const referenciaId = referencia.id_ref;
-
-          // Verifica si referenciaId está definido antes de usarlo
-          if (referenciaId !== undefined) {
-            // Ahora creamos los diagnósticos con el ID de referencia
-            this.createDiagnosticos(referenciaId);
-          } else {
-            Swal.fire('Error', 'No se pudo obtener el ID de la referencia médica.', 'error');
-          }
-        },
-        error: error => {
-          console.error('Error al guardar la referencia médica:', error);
-
-          let errorMessage = 'Hubo un problema al guardar la referencia médica.';
-
-          // Verifica si el error tiene un mensaje específico del backend
-          if (error.error && error.error.message) {
-            errorMessage = error.error.message;
-          } else if (error.status === 400) {
-            errorMessage = 'La atención médica ya está asociada a otra referencia médica.';
-          }
-
-          Swal.fire('Error', errorMessage, 'error');
-        }
-      });
-  }
-  createDiagnosticos(referenciaId: number): void {
-    console.log('Creando diagnósticos para referenciaId:', referenciaId);
-  
-    // Asegúrate de que no haya diagnósticos vacíos o nulos
-    const validDiagnosticos = this.referencia.diagnosticos.filter(diagnostico => diagnostico && diagnostico.descripcion);
-  
-    validDiagnosticos.forEach(diagnostico => {
-      console.log('Diagnóstico:', diagnostico);
-  
-      if (diagnostico) {
-        // diagnostico. = { id_ref: referenciaId };
-        this.diagnosticoService.create(diagnostico).subscribe({
-          next: (createdDiagnostico) => {
-            console.log('Diagnóstico creado:', createdDiagnostico);
-          },
-          error: (error) => {
-            console.error('Error al crear diagnóstico:', error);
-          }
+    this.referenciaService.create(this.referencia).subscribe(
+      () => {
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'Referencia médica guardada correctamente',
+          icon: 'success',
+          confirmButtonColor: '#16a34a'
+        });
+        this.router.navigate(['/referencia-medica']);
+      },
+      error => {
+        console.error('Error al guardar referencia médica:', error);
+        Swal.fire({
+          title: 'Error al guardar',
+          text: 'Revisa los datos ingresados',
+          icon: 'error',
+          confirmButtonColor: '#dc2626'
         });
       }
-    });
-  }
-  
-  
-
-  addDiagnostico() {
-    const newDiagnostico = new Diagnostico();
-    this.referencia.diagnosticos.push(newDiagnostico);
-    this.filteredEnfermedades[this.referencia.diagnosticos.length - 1] = []; 
-    this.showSuggestions[this.referencia.diagnosticos.length - 1] = false; 
-  }
-
-  eliminarDiagnostico(index: number) {
-    this.referencia.diagnosticos.splice(index, 1);
-    delete this.filteredEnfermedades[index]; 
-    delete this.showSuggestions[index];
-  }
-
-  // metodo cargar pacientes en el form para editar
-  cargarReferencia(): void {
-    this.activateRouter.params.subscribe(params => {
-      let id = params['id']
-      if (id) {
-        this.referenciaService.getReferencia(id).subscribe((referencia) => this.referencia = referencia)
-        this.editMode = true; // Deshabilitar el modo de edición
-      }
-    })
-  }
-
-  cargarEnfermedades(): void {
-    this.enfermedadesService.getEnfermedades().subscribe(enfermedades => {
-      this.enfermedades = enfermedades;
-      this.referencia.diagnosticos.forEach((_, index) => {
-        this.filteredEnfermedades[index] = enfermedades;
-      });
-    });
-  }
-  cargarDoctores(): void {
-    this.doctorService.getDoctores().subscribe(doctores => this.doctores = doctores);
-  }
-  cargarAtencionesMedicas(): void {
-    this.atencionMedicaService.getAtencionesMedicas().subscribe(atenciones => this.atencionesMedicas = atenciones);
-  }
-
-
-  ngOnInit(): void {
-    this.cargarReferencia();
-    this.cargarEnfermedades();
-    this.cargarDoctores();
-    this.cargarAtencionesMedicas();
-  }
-
-
-  //logica para agregar el nombre de las endermedades
-
-  
-  onSearch(index: number) {
-    // Proporcionar un valor predeterminado si searchTerm es undefined
-    const searchTerm = this.referencia.diagnosticos[index].enfermedad.codigo || '';
-    this.filteredEnfermedades[index] = this.enfermedades.filter(enf => 
-      enf.nombreEnf.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    this.showSuggestions[index] = true;
-  }
-
-  selectEnfermedad(enfermedad: Enfermedades, index: number) {
-    
-    this.referencia.diagnosticos[index].enfermedad.nombre = enfermedad.nombreEnf;
-    this.referencia.diagnosticos[index].enfermedad.codigo = enfermedad.codigoEnf; // Actualiza el código CIE 10
-    this.showSuggestions[index] = false;
-  }
-
-  onFocus(index: number) {
-    /*if (this.referencia.diagnosticos[index].searchTerm?.length > 0 || this.filteredEnfermedades[index].length > 0) {
-      this.showSuggestions[index] = true;
-    }*/
-    //this.showSuggestions[index] = true;
-
-  }
-  onBlur(index: number) {
-    setTimeout(() => {
-      this.showSuggestions[index] = false;
-    }, 500);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.autocomplete-container')) {
-      Object.keys(this.showSuggestions).forEach(key => {
-        this.showSuggestions[+key] = false;
-      });
-    }
-  }
-
-  onMouseOver(enfermedad: Enfermedades) {
-    this.activeEnfermedad = enfermedad;
   }
 }
-
-
-

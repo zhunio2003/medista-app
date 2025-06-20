@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ReferenciaMedicaService } from './referencia-medica.service';
-import { ReferenciaMedica } from './referencia-medica';
+import { ReferenciaMedicaService } from '../core/service/referencia-medica.service';
+import { ReferenciaMedica } from '../core/model/referencia-medica';
 import Swal from 'sweetalert2';
 import { AtencionMedica } from '../core/model/atencion-medica';
 import { AtencionMedicaService } from '../core/service/atencion-medica.service';
@@ -60,7 +60,7 @@ export class ReferenciaMedicaComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.referenciaService.deleteReferencia(id).subscribe(response => {
-          this.referencias = this.referencias.filter(ReferenciaMedica => ReferenciaMedica.id_ref !== id);
+          // this.referencias = this.referencias.filter(ReferenciaMedica => ReferenciaMedica.id !== id);
           Swal.fire({
             title: 'Eliminado!',
             text: 'Su registro ha sido eliminado.',
@@ -83,27 +83,27 @@ export class ReferenciaMedicaComponent implements OnInit {
   `).join('');
 
     Swal.fire({
-      title: `${referencia.entidad_sistema_ref}`,
+      title: `${referencia.entidadSistema}`,
       html: `
-        <p><strong>Fecha:</strong> ${referencia.fecha_ref}</p>
-        <p><strong>Paciente:</strong> ${referencia.atencionMedica?.fichaMedica.cedula} - ${referencia.atencionMedica?.fichaMedica.paciente}</p>
-        <p><strong>Entidad:</strong> ${referencia.entidad_sistema_ref}</p>
-        <p><strong>Especialidad:</strong> ${referencia.especialidad_ref}</p>
-        <p><strong>Establecimiento:</strong> ${referencia.establecimiento_ref}</p>
-        <p><strong>Hallazgos MSP:</strong> ${referencia.hallazgos_ref}</p>
-        <p><strong>Institución:</strong> ${referencia.institucion_ref}</p>
-        ${referencia.motivo_limitada_ref ? `<p><strong>Motivo: Limitada capacidad resolutiva</strong></p>` : ''}
-      ${referencia.motivo_falta_ref ? `<p><strong>Motivo: Falta de profesional</strong></p>` : ''}
-      ${referencia.motivo_otros_ref ? `<p><strong>Motivo: Otros</strong></p>` : ''}
-        <p><strong>Resumen:</strong> ${referencia.resumen_ref}</p>
-        <p><strong>Servicio:</strong> ${referencia.servicio_ref}</p>
+        <p><strong>Fecha:</strong> ${referencia.fecha}</p>
+        <p><strong>Paciente:</strong> ${referencia.fichaMedica.paciente}</p>
+        <p><strong>Entidad:</strong> ${referencia.entidadSistema}</p>
+        <p><strong>Especialidad:</strong> ${referencia.especialidad}</p>
+        <p><strong>Establecimiento:</strong> ${referencia.establecimiento}</p>
+        <p><strong>Hallazgos MSP:</strong> ${referencia.hallazgos}</p>
+        <p><strong>Institución:</strong> ${referencia.institucion}</p>
+        ${referencia.motivoLimitada ? `<p><strong>Motivo: Limitada capacidad resolutiva</strong></p>` : ''}
+      ${referencia.motivoFaltaProfesional? `<p><strong>Motivo: Falta de profesional</strong></p>` : ''}
+      ${referencia.motivoOtros? `<p><strong>Motivo: Otros</strong></p>` : ''}
+        <p><strong>Resumen:</strong> ${referencia.resumen}</p>
+        <p><strong>Servicio:</strong> ${referencia.servicio}</p>
         <p><strong>Diagnósticos:</strong></p>
         <ul>${diagnosticosHtml}</ul>
       `,
     });
   }
 
-getEntidadFrecuente(): string {
+/*getEntidadFrecuente(): string {
   const conteo: { [entidad: string]: number } = {};
 
   for (let ref of this.referencias) {
@@ -124,7 +124,7 @@ getEntidadFrecuente(): string {
 
   return maxEntidad || '-';
 }
-
+*/
 
 
 }

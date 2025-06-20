@@ -20,15 +20,13 @@ import { FormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { AuthModule } from '@auth0/auth0-angular';
-
-
 // http
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
   // importamos el service
   import { DoctorService } from './core/service/doctor.service';
-  import { ReferenciaMedicaService } from './referencia-medica/referencia-medica.service';
+  import { ReferenciaMedicaService } from './core/service/referencia-medica.service';
   import { EnfermedadesService } from './core/service/enfermedades.service';
 
 // ventana de registro paciente
@@ -107,6 +105,7 @@ const routes: Routes = [
     LoginComponent,
     FormComponent,
     FormDocComponent,
+    FormRefMedicaComponent,
     FormEnfermedadesComponent,
     DashboardComponent,
     FormAtencionMedicaComponent,

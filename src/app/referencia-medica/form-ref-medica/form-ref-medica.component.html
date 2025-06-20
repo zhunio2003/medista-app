@@ -1,0 +1,141 @@
+<div class="scroll-container">
+  <div class="container d-flex justify-content-center mt-3">
+    <h2>Ingreso de Referencia Médica</h2>
+  </div>
+
+  <form (ngSubmit)="create()" class="margin">
+
+    <!-- 🔍 Búsqueda de paciente -->
+    <fieldset class="container-datos form-grid mx-4">
+      <div class="input-group">
+        <div class="search-group">
+          <input type="text" id="cedula" name="cedula" placeholder="Cédula" [(ngModel)]="cedulaBusqueda">
+          <button type="button" class="search-button" (click)="buscar()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 📋 Datos del paciente -->
+      <div class="input-container" *ngIf="pacienteEncontrado">
+        <input type="text" placeholder="Nombre" [value]="pacienteEncontrado?.nombre" disabled>
+      </div>
+      <div class="input-container" *ngIf="pacienteEncontrado">
+        <input type="text" placeholder="Apellido" [value]="pacienteEncontrado?.apellido" disabled>
+      </div>
+      <div class="input-container" *ngIf="pacienteEncontrado">
+        <input type="text" placeholder="Carrera" [value]="pacienteEncontrado?.carrera" disabled>
+      </div>
+    </fieldset>
+
+    <!-- 🏥 Datos de derivación -->
+    <div class="mx-4 mt-4">
+      <h3>Datos de la Derivación</h3>
+    </div>
+
+    <fieldset class="container-derivacion form-grid mx-4">
+      <div class="input-container">
+        <label>Institución:</label>
+        <input type="text" [(ngModel)]="referencia.institucion" name="institucion">
+      </div>
+      <div class="input-container">
+        <label>Servicio:</label>
+        <input type="text" [(ngModel)]="referencia.servicio" name="servicio">
+      </div>
+      <div class="input-container">
+        <label>Entidad del Sistema:</label>
+        <input type="text" [(ngModel)]="referencia.entidadSistema" name="entidadSistema">
+      </div>
+      <div class="input-container">
+        <label>Establecimiento:</label>
+        <input type="text" [(ngModel)]="referencia.establecimiento" name="establecimiento">
+      </div>
+      <div class="input-container">
+        <label>Servicio Derivado:</label>
+        <input type="text" [(ngModel)]="referencia.servicioDerivado" name="servicioDerivado">
+      </div>
+      <div class="input-container">
+        <label>Especialidad:</label>
+        <input type="text" [(ngModel)]="referencia.especialidad" name="especialidad">
+      </div>
+    </fieldset>
+
+    <!-- 📌 Motivos de derivación -->
+    <div class="mx-4 mt-4">
+      <h3>Motivos de Referencia</h3>
+    </div>
+    <fieldset class="container-motivos form-grid mx-4">
+      <div class="input-container-inline">
+        <input type="checkbox" [(ngModel)]="referencia.motivoLimitada" name="motivoLimitada">
+        <label>Capacidad limitada de atención</label>
+      </div>
+      <div class="input-container-inline">
+        <input type="checkbox" [(ngModel)]="referencia.motivoFaltaProfesional" name="motivoFaltaProfesional">
+        <label>Falta de profesional</label>
+      </div>
+      <div class="input-container-inline">
+        <input type="checkbox" [(ngModel)]="referencia.motivoOtros" name="motivoOtros">
+        <label>Otros motivos</label>
+      </div>
+    </fieldset>
+
+    <!-- 🧠 Detalles clínicos -->
+    <div class="mx-4 mt-4">
+      <h3>Resumen Clínico</h3>
+    </div>
+    <fieldset class="textarea-container mx-4">
+      <textarea rows="3" placeholder="Resumen del caso" [(ngModel)]="referencia.resumen" name="resumen"></textarea>
+      <textarea rows="3" placeholder="Hallazgos clínicos" [(ngModel)]="referencia.hallazgos" name="hallazgos"></textarea>
+    </fieldset>
+
+    <!-- 🧠 Diagnóstico -->
+    <div class="mx-4">
+      <h3>Diagnósticos</h3>
+    </div>
+    <div class="diagnostico-container mx-4">
+      <table class="diagnostico-table">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Enfermedad</th>
+            <th>CIE-10</th>
+            <th>Presuntivo</th>
+            <th>Definitivo</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of referencia.diagnosticos; let i = index">
+            <td>
+              <textarea [(ngModel)]="item.descripcion" name="descripcion{{i}}" placeholder="Ingrese diagnóstico"></textarea>
+            </td>
+            <td>
+              <div class="autocomplete-container">
+                <input type="text" [(ngModel)]="item.enfermedad.nombre"
+                       (input)="filterEnfermedades($event, i)" placeholder="Buscar enfermedad" name="busquedaEnf{{i}}">
+                <div class="autocomplete-items"
+                     *ngIf="filteredEnfermedades[i].length > 0">
+                  <div *ngFor="let enfermedad of filteredEnfermedades[i]" (click)="selectEnfermedad(enfermedad, i)">
+                    {{ enfermedad.nombreEnf }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>{{ item.enfermedad.codigo }}</td>
+            <td><input type="radio" [(ngModel)]="item.estado" [value]="false" name="estadoDiag{{i}}"></td>
+            <td><input type="radio" [(ngModel)]="item.estado" [value]="true" name="estadoDiag{{i}}"></td>
+            <td><button type="button" (click)="eliminarDiagnostico(i)">❌</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" (click)="addDiagnostico()" class="botonCrearFila">Agregar Diagnóstico</button>
+    </div>
+
+    <!-- ✅ Acciones -->
+    <div class="form-footer">
+      <button class="btn btn-success" type="submit">Guardar</button>
+      <button type="button" class="btn btn-danger" (click)="cancelar()">Cancelar</button>
+    </div>
+
+  </form>
+</div>

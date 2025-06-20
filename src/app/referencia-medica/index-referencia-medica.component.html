@@ -17,7 +17,7 @@
         <div class="stat-label">Referencias Registradas</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">{{ getEntidadFrecuente() }}</div>
+      <!-- <div class="stat-number">{{ getEntidadFrecuente() }}</div> -->
         <div class="stat-label">Entidad más referida</div>
       </div>
     </div>
@@ -46,20 +46,20 @@
           </thead>
           <tbody>
             <tr *ngFor="let referencia of referencias">
-              <td>{{ referencia.id_ref }}</td>
-              <td>{{ referencia.codigo_msp_ref}}</td>
-              <td>{{ referencia.atencionMedica }}</td>
-              <td>{{ referencia.codigo_msp_ref }}</td>
+              <td>{{ referencia.id }}</td>
+              <td>{{ referencia.fichaMedica.paciente}}</td>
+              <td>{{ referencia.motivoLimitada}}</td>
+              <td>{{ referencia.doctor.nombre}}</td>
               <td>
-                <span class="tag-entidad">{{ referencia.entidad_sistema_ref }}</span>
+                <span class="tag-entidad">{{ referencia.entidadSistema }}</span>
               </td>
-              <td>{{ referencia.fecha_ref | date:'dd/MM/yyyy' }}</td>
+              <td>{{ referencia.fecha | date:'dd/MM/yyyy' }}</td>
               <td>
                 <div class="action-buttons">
                   <button class="btn btn-primary-modern btn-sm" (click)="verDetalles(referencia)" title="Ver">
                     <i class="fas fa-eye"></i>
                   </button>
-                  <button class="btn btn-warning-modern btn-sm" [routerLink]="['/form-ref-medica', referencia.id_ref]" title="Editar">
+                  <button class="btn btn-warning-modern btn-sm" [routerLink]="['/form-ref-medica', referencia.id]" title="Editar">
                     <i class="fas fa-edit"></i>
                   </button>
                   <!-- <button class="btn btn-danger-modern btn-sm" (click)="deleteReferencia(referencia.id_ref)" title="Eliminar">
