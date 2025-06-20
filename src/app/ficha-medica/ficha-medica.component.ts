@@ -19,7 +19,7 @@ export class FichaMedicaComponent implements OnInit {
   constructor(
     private fichaMedicaService: FichaMedicaService,
     private pacienteService: PacienteService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cargarFichaMedica();
@@ -74,72 +74,29 @@ export class FichaMedicaComponent implements OnInit {
     });
   }
 
-  buscar(): void {
-    if (this.cedulaBusqueda) {
-      this.pacienteService.buscarPorCedula(this.cedulaBusqueda).subscribe(
-        paciente => {
-          if (paciente) {
-            this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-              this.fichaMedicaEncontrada = fichaMedica.filter(ficha => ficha.paciente.cedula === paciente.cedula);
-            });
-          } else {
-            this.fichaMedicaEncontrada = [];
-          }
-        },
-        error => {
-          console.error('Error al buscar el paciente:', error);
-          this.fichaMedicaEncontrada = [];
-        }
-      );
-    } else if (this.apellidoBusqueda) {
-      this.pacienteService.buscarPorApellido(this.apellidoBusqueda).subscribe(
-        paciente => {
-          if (paciente) {
-            this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-              this.fichaMedicaEncontrada = fichaMedica.filter(ficha =>
-                ficha.paciente.apellido.toLowerCase().includes(this.apellidoBusqueda.toLowerCase())
-              );
-            });
-          } else {
-            this.fichaMedicaEncontrada = [];
-          }
-        },
-        error => {
-          console.error('Error al buscar el paciente por apellido:', error);
-          this.fichaMedicaEncontrada = [];
-        }
-      );
-    } else if (this.profesionBusqueda) {
-      this.pacienteService.buscarPorProfesion(this.profesionBusqueda).subscribe(
-        paciente => {
-          if (paciente) {
-            this.fichaMedicaService.getFichasMedicas().subscribe(fichaMedica => {
-              this.fichaMedicaEncontrada = fichaMedica.filter(ficha =>
-                ficha.paciente.profesion.toLowerCase().includes(this.profesionBusqueda.toLowerCase())
-              );
-            });
-          } else {
-            this.fichaMedicaEncontrada = [];
-          }
-        },
-        error => {
-          console.error('Error al buscar el paciente por profesión:', error);
-          this.fichaMedicaEncontrada = [];
-        }
-      );
-    } else {
-      this.fichaMedicaEncontrada = [];
-    }
-  }
+ buscar(): void {
+  const cedula = this.cedulaBusqueda?.trim() === '' ? null : this.cedulaBusqueda.trim();
+  const apellido = this.apellidoBusqueda?.trim() === '' ? null : this.apellidoBusqueda.trim();
+  const profesion = this.profesionBusqueda?.trim() === '' ? null : this.profesionBusqueda.trim();
+
+  this.fichaMedicaService.buscarConFiltros(cedula, apellido, profesion).subscribe(resultados => {
+    this.fichaMedicaEncontrada = resultados;
+  });
+}
+
 
   recargarTabla(): void {
+  this.fichaMedicaService.getFichasMedicas().subscribe(fichas => {
     this.fichaMedicaEncontrada = [];
-    this.cargarFichaMedica();
+    this.fichaMedica = fichas;
     this.cedulaBusqueda = '';
     this.apellidoBusqueda = '';
     this.profesionBusqueda = '';
-  }
+  });
+}
+
+
 
   // Eliminar ficha (sin implementar)
-  deleteFicha(): void {}
+  deleteFicha(): void { }
 }

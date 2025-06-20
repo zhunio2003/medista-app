@@ -16,7 +16,13 @@
       <div class="input-container">
         <input type="text" id="cedula" placeholder="Cédula" [(ngModel)]="cedulaBusqueda">
         <input type="text" id="apellido" placeholder="Apellido" [(ngModel)]="apellidoBusqueda">
-        <input type="text" id="rol" placeholder="Rol" [(ngModel)]="profesionBusqueda">
+        <div>
+          <select id="rol" [(ngModel)]="profesionBusqueda" class="form-select">
+            <option value="">-- Rol --</option>
+            <option value="Estudiante">Estudiante</option>
+            <option value="Profesor">Profesor</option>
+          </select>
+        </div>
         <button class="btn-primary-modern btn-modern" type="button" (click)="buscar()">
           <i class="fas fa-search me-2"></i> BUSCAR
         </button>
@@ -53,7 +59,8 @@
                   <button class="btn-primary-modern btn-modern" (click)="verDetalle(ficha)" title="Ver">
                     <i class="fas fa-eye"></i>
                   </button>
-                  <button class="btn-warning-modern btn-modern" [routerLink]="['/ficha-medica/form', ficha.idFic]" title="Editar">
+                  <button class="btn-warning-modern btn-modern" [routerLink]="['/ficha-medica/form', ficha.idFic]"
+                    title="Editar">
                     <i class="fas fa-edit"></i>
                   </button>
                   <button class="btn-danger-modern btn-modern" title="Eliminar">
@@ -84,18 +91,19 @@
                 <td>{{ ficha.paciente.apellido }}</td>
                 <td>{{ ficha.paciente.profesion }}</td>
                 <td>
-  <div class="action-buttons">
-    <button class="btn-primary-modern btn-modern" (click)="verDetalle(ficha)" title="Ver detalles">
-      <i class="fas fa-eye"></i>
-    </button>
-    <button class="btn-warning-modern btn-modern" [routerLink]="['/ficha-medica/form', ficha.idFic]" title="Editar ficha">
-      <i class="fas fa-edit"></i>
-    </button>
-    <button class="btn-danger-modern btn-modern" title="Eliminar ficha">
-      <i class="fas fa-trash"></i>
-    </button>
-  </div>
-</td>
+                  <div class="action-buttons">
+                    <button class="btn-primary-modern btn-modern" (click)="verDetalle(ficha)" title="Ver detalles">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-warning-modern btn-modern" [routerLink]="['/ficha-medica/form', ficha.idFic]"
+                      title="Editar ficha">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-danger-modern btn-modern" title="Eliminar ficha">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
 
               </tr>
             </tbody>

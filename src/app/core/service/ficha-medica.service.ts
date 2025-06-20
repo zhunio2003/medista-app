@@ -28,5 +28,17 @@ export class FichaMedicaService {
   getFichaPaciente(paciente: number): Observable<FichaMedica> {
     return this.http.get<FichaMedica>(`${this.urlEndPoint}/paciente/${paciente}`);
   }
- 
+
+buscarConFiltros(cedula: string | null, apellido: string | null, profesion: string | null): Observable<FichaMedica[]> {
+  const params: any = {};
+  if (cedula !== null) params['cedula'] = cedula;
+  if (apellido !== null) params['apellido'] = apellido;
+  if (profesion !== null) params['profesion'] = profesion;
+
+  return this.http.get<FichaMedica[]>(`${this.urlEndPoint}/buscar`, { params });
+}
+
+
+
+
 }

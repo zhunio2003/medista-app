@@ -92,7 +92,7 @@
   flex-wrap: wrap;
 }
 
-.input-container input {
+.input-container input{
   width: 220px;
   height: 43px;
   padding: 12px;
@@ -299,4 +299,19 @@
 ::-webkit-scrollbar-track {
   background: #f8f9fa;
   border-radius: 10px;
+}
+
+#rol {
+  width: 220px;
+  height: 43px;
+  padding: 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #e8f1fa;
+  color: var(--text-dark);
+  transition: border-color 0.2s;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  grid-column: span 1;
 }
