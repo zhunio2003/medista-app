@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SignoVital } from '../model/signo-vital';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignoVitalService {
 
-  private urlEndPoint:string="http://localhost:8080/api/signos_vitales";
+  private urlEndPoint: string = `${environment.apiUrl}/signos_vitales`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'})
 
   constructor(private http:HttpClient) { }

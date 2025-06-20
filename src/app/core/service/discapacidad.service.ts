@@ -2,13 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Discapacidad } from '../../ficha-medica/modelo/discapacidad';
+import { environment } from '../../../environment/environment'; 
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiscapacidadService {
 
-  private urlEndPoint:string="http://localhost:8080/api/discapacidades";
+  private urlEndPoint: string = `${environment.apiUrl}/discapacidades`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'})
 
   constructor(private http:HttpClient) { }

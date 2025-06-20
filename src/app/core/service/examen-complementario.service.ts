@@ -2,13 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExamenComplementario } from '../model/examen-complementario';
+import { environment } from '../../../environment/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExamenComplementarioService {
 
-  private urlEndPoint: string = "http://localhost:8080/api/examenes_complementarios";
+  private urlEndPoint: string = `${environment.apiUrl}/examenes_complementarios`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }

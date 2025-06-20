@@ -56,11 +56,11 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Nombre</th>
+              <th>Estudiante</th>
               <th>Cédula</th>
               <th>Motivo</th>
-              <th>Fecha Nac.</th>
-              <th>Carrera</th>
+              <th>Enfermedad Actual</th>
+              <th>Tratamiento</th>
               <th>Fecha Visita</th>
               <th>Receta</th>
             </tr>
@@ -69,7 +69,7 @@
             <tr *ngFor="let atencion of atenciones; let i = index">
               <td>{{ i + 1 }}</td>
               <td class="nombre-col">{{ atencion?.fichaMedica?.paciente?.nombre }} {{ atencion?.fichaMedica?.paciente?.apellido }}</td>
-              <td>{{ atencion?.fichaMedica?.paciente?.cedula }}</td>
+              <td>{{ atencion.fichaMedica.paciente }}</td>
               <td>{{ atencion?.motivoAte }}</td>
               <td>{{ atencion?.fichaMedica?.paciente?.fechaNacimiento }}</td>
               <td>{{ atencion?.fichaMedica?.paciente?.carrera }}</td>

@@ -37,8 +37,7 @@
             <tr>
               <th><i class="fas fa-hashtag me-2"></i>ID</th>
               <th><i class="fas fa-id-card me-2"></i>Cédula</th>
-              <th><i class="fas fa-user me-2"></i>Nombres</th>
-              <th><i class="fas fa-user me-2"></i>Apellidos</th>
+              <th><i class="fas fa-user me-2"></i>Estudiante</th>
               <th><i class="fas fa-hospital me-2"></i>Entidad</th>
               <th><i class="fas fa-calendar-alt me-2"></i>Fecha</th>
               <th><i class="fas fa-cogs me-2"></i>Acciones</th>
@@ -47,9 +46,8 @@
           <tbody>
             <tr *ngFor="let referencia of referencias">
               <td>{{ referencia.id }}</td>
+              <td>{{ referencia.fichaMedica.cedula}}</td>
               <td>{{ referencia.fichaMedica.paciente}}</td>
-              <td>{{ referencia.motivoLimitada}}</td>
-              <td>{{ referencia.doctor.nombre}}</td>
               <td>
                 <span class="tag-entidad">{{ referencia.entidadSistema }}</span>
               </td>

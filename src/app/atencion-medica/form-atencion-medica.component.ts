@@ -198,12 +198,6 @@ export class FormAtencionMedicaComponent implements OnInit {
     });
   }
 
-  onFileChange(event: any, index: number) {
-    const file = event.target.files[0];
-    if (file) {
-      this.atencionMedica.examenesComplementarios[index].archivoPdfFile = file;
-    }
-  }
 
   filterEnfermedades(event: any, index: number): void {
     const query = event.target.value.toLowerCase();
@@ -231,64 +225,208 @@ export class FormAtencionMedicaComponent implements OnInit {
     });
   }
 
-  async create(): Promise<void> {
-    this.atencionMedica.fechaAtencionAte = new Date();
+  // ✅ REEMPLAZA estos métodos en tu componente:
 
-    if (!this.fichaMedica || !this.doctor) {
+/**
+ * Maneja la selección de archivos PDF
+ */
+onFileChange(event: any, index: number) {
+  const file = event.target.files[0];
+  if (file) {
+    // Validar que sea PDF
+    if (file.type !== 'application/pdf') {
       Swal.fire({
-        title: 'Error',
-        text: 'Faltan datos del doctor o ficha médica',
+        title: 'Archivo inválido',
+        text: 'Solo se permiten archivos PDF',
         icon: 'error',
         confirmButtonColor: '#dc2626'
       });
       return;
     }
 
-    this.atencionMedica.doctor.id = this.doctor.id;
-    this.atencionMedica.doctor.cedula = this.doctor.cedula;
-    this.atencionMedica.doctor.nombre = this.doctor.nombre + " " + this.doctor.apellido;
-
-    this.atencionMedica.fichaMedica.cedula = this.fichaMedica.paciente.cedula;
-    if (this.fichaMedica.paciente) {
-      this.atencionMedica.fichaMedica.paciente = `${this.fichaMedica.paciente.apellido} ${this.fichaMedica.paciente.nombre}`;
-    }
-    console.log("Paciente asignado:", this.atencionMedica.fichaMedica.paciente);
-
-    // Convertir todos los PDFs a base64 antes de enviar
-    for (let examen of this.atencionMedica.examenesComplementarios) {
-      if (examen.archivoPdfFile) {
-        try {
-          const base64 = await this.convertToBase64(examen.archivoPdfFile);
-          examen.archivoPdf = base64; 
-        } catch (error) {
-          console.error(`Error al convertir PDF a base64 para el examen ${examen.nombre}`, error);
-        }
-      }
+    // Validar tamaño (máximo 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      Swal.fire({
+        title: 'Archivo muy grande',
+        text: 'El archivo no puede ser mayor a 10MB',
+        icon: 'error',
+        confirmButtonColor: '#dc2626'
+      });
+      return;
     }
 
-    // Crear atención médica en MongoDB
-    this.atencionMedicaService.create(this.atencionMedica).subscribe(
-      () => {
-        Swal.fire({
-          title: '¡Éxito!',
-          text: 'Atención médica guardada correctamente',
-          icon: 'success',
-          confirmButtonColor: '#16a34a'
-        });
-        this.router.navigate(['/atencion-medica']);
-      },
-      error => {
-        console.error('Error al guardar atención médica:', error);
-        Swal.fire({
-          title: 'Error al guardar',
-          text: 'Revisa los datos ingresados',
-          icon: 'error',
-          confirmButtonColor: '#dc2626'
-        });
-      }
-    );
+    // Asignar el archivo al examen
+    this.atencionMedica.examenesComplementarios[index].archivoPdfFile = file;
+    this.atencionMedica.examenesComplementarios[index].nombreArchivo = file.name;
+    this.atencionMedica.examenesComplementarios[index].tipoContenido = file.type;
+    this.atencionMedica.examenesComplementarios[index].tamañoArchivo = file.size;
+
+    console.log(`Archivo seleccionado para examen ${index}:`, file.name);
+  }
+}
+
+/**
+ * Método create() mejorado - SIN conversión a base64
+ */
+async create(): Promise<void> {
+  this.atencionMedica.fechaAtencionAte = new Date();
+
+  if (!this.fichaMedica || !this.doctor) {
+    Swal.fire({
+      title: 'Error',
+      text: 'Faltan datos del doctor o ficha médica',
+      icon: 'error',
+      confirmButtonColor: '#dc2626'
+    });
+    return;
   }
 
+  // Asignar datos del doctor
+  this.atencionMedica.doctor.id = this.doctor.id;
+  this.atencionMedica.doctor.cedula = this.doctor.cedula;
+  this.atencionMedica.doctor.nombre = this.doctor.nombre + " " + this.doctor.apellido;
+
+  // Asignar datos del paciente
+  this.atencionMedica.fichaMedica.cedula = this.fichaMedica.paciente.cedula;
+  if (this.fichaMedica.paciente) {
+    this.atencionMedica.fichaMedica.paciente = `${this.fichaMedica.paciente.apellido} ${this.fichaMedica.paciente.nombre}`;
+  }
+
+  console.log("Paciente asignado:", this.atencionMedica.fichaMedica.paciente);
+
+  try {
+    // 1. Crear la atención médica SIN los PDFs
+    const atencionCreada = await this.atencionMedicaService.create(this.atencionMedica).toPromise();
+    
+    if (!atencionCreada || !atencionCreada.id) {
+      throw new Error('No se pudo crear la atención médica');
+    }
+
+    console.log('Atención médica creada con ID:', atencionCreada.id);
+
+    // 2. Subir los PDFs uno por uno
+    const uploadPromises = this.atencionMedica.examenesComplementarios
+      .map(async (examen, index) => {
+        if (examen.archivoPdfFile) {
+          try {
+            console.log(`Subiendo PDF para examen ${index}: ${examen.nombre}`);
+            const response = await this.atencionMedicaService.subirPdfExamen(
+              atencionCreada.id!, 
+              index, 
+              examen.archivoPdfFile
+            ).toPromise();
+            console.log(`✅ PDF ${index} subido:`, response);
+            return { index, success: true, response };
+          } catch (error) {
+            console.error(`❌ Error subiendo PDF ${index}:`, error);
+            return { index, success: false, error };
+          }
+        }
+        return { index, success: true, response: 'No hay archivo' };
+      });
+
+    // Esperar a que se suban todos los PDFs
+    const uploadResults = await Promise.all(uploadPromises);
+    
+    // Verificar resultados
+    const errores = uploadResults.filter(result => !result.success);
+    if (errores.length > 0) {
+      console.warn('Algunos PDFs no se pudieron subir:', errores);
+      Swal.fire({
+        title: 'Atención guardada con advertencias',
+        text: `La atención médica se guardó, pero ${errores.length} archivo(s) PDF no se pudieron subir.`,
+        icon: 'warning',
+        confirmButtonColor: '#f59e0b'
+      });
+    } else {
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Atención médica y archivos PDF guardados correctamente',
+        icon: 'success',
+        confirmButtonColor: '#16a34a'
+      });
+    }
+
+    this.router.navigate(['/atencion-medica']);
+
+  } catch (error) {
+    console.error('Error al guardar atención médica:', error);
+    Swal.fire({
+      title: 'Error al guardar',
+      text: 'Revisa los datos ingresados y conexión a internet',
+      icon: 'error',
+      confirmButtonColor: '#dc2626'
+    });
+  }
+}
+
+/**
+ * Método para descargar PDF de un examen específico (para usar en edición)
+ */
+descargarPdfExamen(atencionId: string, examenIndex: number, nombreExamen: string) {
+  this.atencionMedicaService.descargarPdfExamen(atencionId, examenIndex).subscribe(
+    (data: Blob) => {
+      const blob = new Blob([data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${nombreExamen}_examen.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    },
+    error => {
+      console.error('Error al descargar PDF:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo descargar el archivo PDF',
+        icon: 'error',
+        confirmButtonColor: '#dc2626'
+      });
+    }
+  );
+}
+
+/**
+ * Método para eliminar PDF de un examen específico
+ */
+eliminarPdfExamen(atencionId: string, examenIndex: number) {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Se eliminará el archivo PDF del examen',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#6b7280',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.atencionMedicaService.eliminarPdfExamen(atencionId, examenIndex).subscribe(
+        response => {
+          console.log('PDF eliminado:', response);
+          Swal.fire({
+            title: '¡Eliminado!',
+            text: 'El archivo PDF ha sido eliminado',
+            icon: 'success',
+            confirmButtonColor: '#16a34a'
+          });
+          // Actualizar la vista si es necesario
+        },
+        error => {
+          console.error('Error al eliminar PDF:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo eliminar el archivo PDF',
+            icon: 'error',
+            confirmButtonColor: '#dc2626'
+          });
+        }
+      );
+    }
+  });
+}
   addDiagnostico(): void {
     const newDiagnostico = new Diagnostico();
     this.atencionMedica.diagnosticos.push(newDiagnostico);
