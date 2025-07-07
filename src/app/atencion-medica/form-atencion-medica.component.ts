@@ -350,6 +350,34 @@ export class FormAtencionMedicaComponent implements OnInit {
       return;
     }
 
+    //validar si la cedula ya esta registrada
+    const cedulaPaciente = this.fichaMedica.paciente.cedula;
+    try {
+      const pacienteExistente = await this.pacienteService.buscarPorCedula(cedulaPaciente).toPromise();
+
+      if (pacienteExistente) {
+        Swal.fire({
+          title: 'Cédula duplicada',
+          text: `Ya existe un paciente registrado con la cédula ${cedulaPaciente}`,
+          icon: 'warning',
+          confirmButtonColor: '#f59e0b'
+        });
+        return;
+      }
+    } catch (error: any) {
+      // Si da error 404, significa que NO existe el paciente y se puede continuar
+      if (error.status !== 404) {
+        console.error('Error al buscar paciente por cédula:', error);
+        Swal.fire({
+          title: 'Error de validación',
+          text: 'No se pudo validar la cédula. Intente nuevamente.',
+          icon: 'error',
+          confirmButtonColor: '#dc2626'
+        });
+        return;
+      }
+    }
+
     // Asignar datos del doctor
     this.atencionMedica.doctor.id = this.doctor.id;
     this.atencionMedica.doctor.cedula = this.doctor.cedula;
