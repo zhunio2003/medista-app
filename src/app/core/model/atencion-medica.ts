@@ -2,6 +2,7 @@ import { Diagnostico } from "./diagnostico";
 import { ExamenComplementario } from "./examen-complementario";
 import { ExamenFisico } from "./examen-fisico";
 import { SignoVital } from "./signo-vital";
+import { EmbarazoActual } from "./embarazo-actual"; // ✅ IMPORT
 
 export class AtencionMedica {
   id?: string;  // ID de MongoDB
@@ -11,7 +12,7 @@ export class AtencionMedica {
   tratamientoAte: string = "";
   fechaAtencionAte: Date = new Date();
 
-  embarazada: boolean = false;
+  // ✅ USANDO la clase separada
   embarazoActual: EmbarazoActual = new EmbarazoActual();
 
   signosVitales: SignoVital = new SignoVital();
@@ -30,22 +31,7 @@ export class DoctorRef {
 }
 
 export class FichaMedicaRef {
+  id: number = 0;
   cedula: string = "";
   paciente: string = "";
-}
-
-export class EmbarazoActual {
-  fum: Date = new Date();
-  fpp: Fpp = new Fpp();
-  controles: string = "";
-  inmunizaciones: string = "";
-  observaciones: string = "";
-}
-
-export class Fpp {
-  fecha: string = "";  // Formato "yyyy-MM-dd"
-  dia: number = 0;
-  mes: number = 0;
-  anio: number = 0;
-  sg: number = 0;
 }

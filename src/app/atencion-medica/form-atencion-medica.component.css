@@ -155,6 +155,184 @@ button {
   gap: 0.5rem;
 }
 
+/* NUEVOS ESTILOS PARA EMERGENCIAS OBSTÉTRICAS */
+.container-emergencia-obstetrica {
+  margin-top: 1rem;
+  border: 2px solid #1e40af;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.obstetrics-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.obstetrics-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  font-size: 0.85rem;
+}
+
+.obstetrics-table td {
+  border: 1px solid #000;
+  padding: 0.4rem;
+  vertical-align: top;
+}
+
+.obstetrics-label {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  min-width: 120px;
+  padding: 0.4rem 0.6rem;
+}
+
+.obstetrics-input {
+  background-color: #fff;
+  padding: 0.2rem;
+  min-width: 80px;
+}
+
+.obstetrics-input input {
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+  background-color: transparent;
+  border: 1px solid #cbd5e1;
+}
+
+.obstetrics-input input:focus {
+  border-color: #1e40af;
+  outline: none;
+}
+
+.obstetrics-date {
+  position: relative;
+}
+
+.date-labels {
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.obstetrics-checkbox-section {
+  background-color: #f8f9fa;
+  padding: 0.4rem;
+  border-left: 2px solid #1e40af;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.checkbox-title {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #1e40af;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: scale(0.9);
+}
+
+.checkbox-item label {
+  font-size: 0.75rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.obstetrics-gapc-section {
+  background-color: #f8f9fa;
+  padding: 0.4rem;
+}
+
+.gapc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.gapc-label {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #1e40af;
+}
+
+.gapc-inputs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.gapc-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.gapc-input-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0;
+  min-width: 15px;
+}
+
+.gapc-input-group input {
+  width: 40px;
+  padding: 0.2rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.3rem;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.obstetrics-description {
+  background-color: #f8f9fa;
+  padding: 0.6rem;
+}
+
+.obstetrics-description label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: #1e40af;
+}
+
+.obstetrics-description textarea {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.3rem;
+  font-size: 0.85rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.obstetrics-description textarea:focus {
+  border-color: #1e40af;
+  outline: none;
+}
+
 /* Animaciones */
 @keyframes fadeInUp {
   0% {
@@ -225,6 +403,18 @@ button {
     flex-direction: column;
     align-items: stretch;
   }
+
+  .obstetrics-table {
+    font-size: 0.75rem;
+  }
+
+  .gapc-inputs {
+    justify-content: center;
+  }
+
+  .checkbox-group {
+    align-items: flex-start;
+  }
 }
 
 .section-header {
@@ -243,10 +433,18 @@ button {
   font-weight: 700;
 }
 
+/* Grupo de búsqueda corregido */
 .search-group {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0.5rem;
+}
+
+.search-group input {
+  flex: 1;
+  margin: 0;
+  height: 42px;
+  box-sizing: border-box;
 }
 
 .search-button {
@@ -257,8 +455,16 @@ button {
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .search-button:hover {
   background-color: #1c3a9b;
 }
+

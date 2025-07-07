@@ -96,99 +96,142 @@
         </fieldset>
 
 
-        <div class="mx-4 mt-4" *ngIf="fichaMedica?.paciente?.genero === 'femenino'">
-            <h3 for="signos">Emergencias Obstetricas</h3>
-        </div>
+        <!-- SECCIÓN: Emergencias Obstétricas -->
+<div class="mx-4 mt-4" *ngIf="esMujer()">
+    <h3>Emergencias Obstétricas</h3>
+</div>
 
-        <fieldset *ngIf="fichaMedica?.paciente?.genero === 'femenino'"
-            class="container-emergencia-obstetrica form-grid mx-4">
-
-            <div class="input-container-inline">
-                <label for="pa">Menarca:</label>
-                <input type="number" id="menarca_eme" placeholder="Menarca" name="menarca_eme"
-                    [value]="emergenciaObstetrica?.menarca_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline">
-                <label for="ritmo_mestrual_eme">Ritmo mestrual:</label>
-                <input type="text" id="ritmo_mestrual_eme" placeholder="Ritmo mestrual" name="ritmo_mestrual_eme"
-                    [value]="emergenciaObstetrica?.ritmo_menstrual_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline">
-                <label for="talla">Ciclos</label>
-                <input type="number" id="ciclos_eme" placeholder="ciclos" name="ciclos_eme"
-                    [value]="emergenciaObstetrica?.ciclos_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline">
-                <label for="imc">FUM:</label>
-                <input type="date" id="fum_eme" placeholder="FUM" name="fum_eme"
-                    [value]="emergenciaObstetrica?.fum_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline">
-                <label for="ivsa_eme">IVSA:</label>
-                <input type="number" id="ivsa_eme" placeholder="IVSA" name="ivsa_eme"
-                    [value]="emergenciaObstetrica?.ivsa_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline">
-                <label for="numero_parejas_sexuales">N° de parejas sexuales:</label>
-                <input type="text" id="numero_parejas_sexuales" placeholder="parejas" name="numero_parejas_sexuales_eme"
-                    [value]="emergenciaObstetrica?.numero_parejas_sexuales_eme || ''" disabled>
-            </div>
-            <div class="input-container-multiple-inline">
-                <label for="g_eme">G:</label>
-                <input type="number" id="g_eme" placeholder="---" name="g_eme"
-                    [value]="emergenciaObstetrica?.g_eme || ''" disabled>
-
-                <label for="a_eme">A:</label>
-                <input type="text" id="a_eme" placeholder="---" name="a_eme" [value]="emergenciaObstetrica?.a_eme || ''"
-                    disabled>
-
-                <label for="p_eme">P:</label>
-                <input type="text" id="p_eme" placeholder="---" name="p_eme" [value]="emergenciaObstetrica?.p_eme || ''"
-                    disabled>
-
-                <label for="c_eme">C:</label>
-                <input type="text" id="c_eme" placeholder="---" name="c_eme" [value]="emergenciaObstetrica?.c_eme || ''"
-                    disabled>
-            </div>
-            <div class="input-container-inline">
-                <div class="input-container-inline">
-                    <label for="">Dismenorrea</label>
-                    <input type="checkbox" id="dismenorrea_eme" name="dismenorrea_eme"
-                        [checked]="emergenciaObstetrica?.dismenorrea_eme || false" disabled>
-
-                </div>
-                <div class="input-container-inline">
-                    <label for="">Mastodinia</label>
-                    <input type="checkbox" id="mastodinia_eme" name="mastodinia_eme"
-                        [checked]="emergenciaObstetrica?.mastodinia_eme || false" disabled>
-                </div>
-            </div>
-            <div class="input-container-inline">
-                <label for="fpp_eme">¿Está embarazada?</label>
-                <input type="checkbox" id="isEmbarazada" name="isEmbarazada"
-                    [checked]="emergenciaObstetrica?.isEmbarazada || false" disabled>
-            </div>
-            <div class="input-container-inline" *ngIf="emergenciaObstetrica?.isEmbarazada">
-                <label for="fpp_eme">FPP:</label>
-                <input type="date" id="fpp_eme" placeholder="FPP" name="fpp_eme"
-                    [value]="emergenciaObstetrica?.fpp_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline" *ngIf="emergenciaObstetrica?.isEmbarazada">
-                <label for="total">Controles</label>
-                <input type="text" id="controles_eme" placeholder="Controles" name="controles_eme"
-                    [value]="emergenciaObstetrica?.controles_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline" *ngIf="emergenciaObstetrica?.isEmbarazada">
-                <label for="capilar">Inmunizaciones</label>
-                <input type="text" id="Inmunizaciones_eme" placeholder="Inmunizaciones" name="inmunizaciones_eme"
-                    [value]="emergenciaObstetrica?.inmunizaciones_eme || ''" disabled>
-            </div>
-            <div class="input-container-inline">
-                <label for="pupilar">Descripción</label>
-                <input type="text" id="descripcion_eme" placeholder="Descripción" name="descripcion_eme"
-                    [value]="emergenciaObstetrica?.descripcion_eme || ''" disabled>
-            </div>
-        </fieldset>
+<fieldset *ngIf="esMujer()" class="container-emergencia-obstetrica mx-4">
+    <div class="obstetrics-table-container">
+        <table class="obstetrics-table">
+            <tbody>
+                <tr>
+                    <td class="obstetrics-label">Menarca:</td>
+                    <td class="obstetrics-input">
+                        <input type="number" id="menarca" name="menarca" 
+                            [value]="historialGinecologico?.menarca || ''" disabled>
+                    </td>
+                    <td class="obstetrics-label">Ritmo Menstrual:</td>
+                    <td class="obstetrics-input">
+                        <input type="text" id="ritmo_menstrual" name="ritmo_menstrual" 
+                            [value]="historialGinecologico?.ritmoMenstrual || ''" disabled>
+                    </td>
+                    <td class="obstetrics-label">Ciclos:</td>
+                    <td class="obstetrics-input">
+                        <input type="number" id="ciclos" name="ciclos" 
+                            [value]="historialGinecologico?.ciclos || ''" disabled>
+                    </td>
+                    <td class="obstetrics-label">FUM:</td>
+                    <td class="obstetrics-input obstetrics-date">
+                        <span class="date-labels">D___ M___ A___</span>
+                        <input type="date" id="fum" name="fum" 
+                            [value]="atencionMedica.embarazoActual.getFumFormatted()" 
+                            (change)="onFumChange($event)">
+                    </td>
+                    <td class="obstetrics-checkbox-section">
+                        <div class="checkbox-group">
+                            <span class="checkbox-title">Marque según aplique:</span>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="dismenorrea" name="dismenorrea"
+                                    [checked]="historialGinecologico?.dismenorrea || false" disabled>
+                                <label for="dismenorrea">Dismenorrea</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="mastodinia" name="mastodinia"
+                                    [checked]="historialGinecologico?.mastodinia || false" disabled>
+                                <label for="mastodinia">Mastodinia</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="obstetrics-label">IVSA:</td>
+                    <td class="obstetrics-input">
+                        <input type="number" id="ivsa" name="ivsa" 
+                            [value]="historialGinecologico?.ivsa || ''" disabled>
+                    </td>
+                    <td class="obstetrics-label">N° Parejas sexuales:</td>
+                    <td class="obstetrics-input">
+                        <input type="number" id="numero_parejas_sexuales" name="numero_parejas_sexuales" 
+                            [value]="historialGinecologico?.numeroParejaSexuales || ''" disabled>
+                    </td>
+                    <td colspan="2" class="obstetrics-gapc-section">
+                        <div class="gapc-container">
+                            <span class="gapc-label">G___A___P___C___</span>
+                            <div class="gapc-inputs">
+                                <div class="gapc-input-group">
+                                    <label>G:</label>
+                                    <input type="number" id="gestas" name="gestas" 
+                                        [value]="historialGinecologico?.gestas || ''" disabled>
+                                </div>
+                                <div class="gapc-input-group">
+                                    <label>A:</label>
+                                    <input type="number" id="abortos" name="abortos" 
+                                        [value]="historialGinecologico?.abortos || ''" disabled>
+                                </div>
+                                <div class="gapc-input-group">
+                                    <label>P:</label>
+                                    <input type="number" id="partos" name="partos" 
+                                        [value]="historialGinecologico?.partos || ''" disabled>
+                                </div>
+                                <div class="gapc-input-group">
+                                    <label>C:</label>
+                                    <input type="number" id="cesareas" name="cesareas" 
+                                        [value]="historialGinecologico?.cesareas || ''" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="obstetrics-label">¿Está embarazada?:</td>
+                    <td class="obstetrics-input">
+                        <input type="checkbox" id="isEmbarazada" name="isEmbarazada"
+                            [(ngModel)]="atencionMedica.embarazoActual.isEmbarazada"
+                            (change)="onEmbarazadaChange()">
+                    </td>
+                    <td class="obstetrics-label">FPP:</td>
+                    <td class="obstetrics-input obstetrics-date">
+                        <span class="date-labels">D___ M___ A___ SG___</span>
+                        <input type="date" id="fpp" name="fpp" 
+                            [value]="atencionMedica.embarazoActual.getFppFormatted()"
+                            (change)="onFppChange($event)"
+                            *ngIf="atencionMedica.embarazoActual.isEmbarazada">
+                    </td>
+                    <td class="obstetrics-label">Controles:</td>
+                    <td class="obstetrics-input">
+                        <input type="number" id="controles" name="controles" 
+                            [(ngModel)]="atencionMedica.embarazoActual.controles"
+                            *ngIf="atencionMedica.embarazoActual.isEmbarazada"
+                            placeholder="Número de controles">
+                    </td>
+                    <td class="obstetrics-label">Inmunizaciones:</td>
+                    <td class="obstetrics-input">
+                        <input type="text" id="inmunizaciones" name="inmunizaciones" 
+                            [(ngModel)]="atencionMedica.embarazoActual.inmunizaciones"
+                            *ngIf="atencionMedica.embarazoActual.isEmbarazada"
+                            placeholder="Inmunizaciones recibidas">
+                    </td>
+                    <td class="obstetrics-input" *ngIf="atencionMedica.embarazoActual.isEmbarazada">
+                        <div class="semanas-gestacion">
+                            <label>Semanas:</label>
+                            <span>{{atencionMedica.embarazoActual.semanasGestacion || 0}} SG</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="obstetrics-description">
+                        <label for="descripcion_embarazo">Descripción / Observaciones:</label>
+                        <textarea id="descripcion_embarazo" name="descripcion_embarazo" 
+                            [(ngModel)]="atencionMedica.embarazoActual.descripcion"
+                            placeholder="Observaciones sobre el embarazo actual..." rows="3"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
 
 
         <div class="mx-4 mt-4">
