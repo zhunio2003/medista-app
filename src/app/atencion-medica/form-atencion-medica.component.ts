@@ -38,10 +38,10 @@ export class FormAtencionMedicaComponent implements OnInit {
   atencionMedicaEncontrado: AtencionMedica | null = null;
   pacienteEncontrado: Paciente | null = null;
   fichaMedica: FichaMedica = new FichaMedica();
-  
+
   // ✅ CORREGIR: Solo HistorialGinecologico (no EmergenciaObstetrica)
   historialGinecologico: HistorialGinecologico | null = null;
-  
+
   atencionMedica: AtencionMedica = new AtencionMedica();
 
   filteredEnfermedades: { [key: number]: Enfermedades[] } = {};
@@ -121,7 +121,7 @@ export class FormAtencionMedicaComponent implements OnInit {
           this.pacienteEncontrado = null;
           this.isSearching = false;
           this.patientFound = false;
-          
+
           // Show error message with SweetAlert2
           Swal.fire({
             title: '¡Paciente no encontrado!',
@@ -153,7 +153,7 @@ export class FormAtencionMedicaComponent implements OnInit {
           this.atencionMedica.fichaMedica.cedula = this.fichaMedica.paciente.cedula;
           this.atencionMedica.fichaMedica.id = this.fichaMedica.idFic; // ✅ AGREGAR ID
           this.atencionMedica.fichaMedica.paciente = `${fichaMedica.paciente.apellido} ${fichaMedica.paciente.nombre}`;
-          
+
           // ✅ AGREGAR: Buscar historial ginecológico si es mujer
           if (this.esMujer()) {
             this.buscarHistorialGinecologico();
@@ -171,10 +171,10 @@ export class FormAtencionMedicaComponent implements OnInit {
 
   // ✅ AGREGAR: Método para verificar si es mujer
   esMujer(): boolean {
-    return this.fichaMedica?.paciente?.genero?.toLowerCase() === 'femenino' || 
-           this.fichaMedica?.paciente?.genero?.toLowerCase() === 'mujer' ||
-           this.pacienteEncontrado?.genero?.toLowerCase() === 'femenino' ||
-           this.pacienteEncontrado?.genero?.toLowerCase() === 'mujer';
+    return this.fichaMedica?.paciente?.genero?.toLowerCase() === 'femenino' ||
+      this.fichaMedica?.paciente?.genero?.toLowerCase() === 'mujer' ||
+      this.pacienteEncontrado?.genero?.toLowerCase() === 'femenino' ||
+      this.pacienteEncontrado?.genero?.toLowerCase() === 'mujer';
   }
 
   // ✅ AGREGAR: Método para buscar historial ginecológico
@@ -197,9 +197,27 @@ export class FormAtencionMedicaComponent implements OnInit {
    */
   onFumChange(event: any): void {
     const fechaString = event.target.value;
-    this.atencionMedica.embarazoActual.setFumFromString(fechaString);
+
+    // ✅ SIMPLIFICAR: Solo asignar la fecha como string
+    // El backend se encargará de la conversión
+    if (fechaString) {
+      // Crear objeto Date para el frontend
+      this.atencionMedica.embarazoActual.fum = new Date(fechaString);
+
+      // Calcular FPP (280 días después)
+      const fppDate = new Date(fechaString);
+      fppDate.setDate(fppDate.getDate() + 280);
+      this.atencionMedica.embarazoActual.fpp = fppDate;
+
+      // Calcular semanas de gestación
+      const ahora = new Date();
+      const diferenciaMilis = ahora.getTime() - new Date(fechaString).getTime();
+      const dias = diferenciaMilis / (1000 * 60 * 60 * 24);
+      this.atencionMedica.embarazoActual.semanasGestacion = Math.floor(dias / 7);
+    }
+
     console.log('FUM actualizada:', fechaString);
-    console.log('FPP calculada:', this.atencionMedica.embarazoActual.getFppFormatted());
+    console.log('FPP calculada:', this.atencionMedica.embarazoActual.fpp);
     console.log('Semanas gestación:', this.atencionMedica.embarazoActual.semanasGestacion);
   }
 
@@ -366,7 +384,7 @@ export class FormAtencionMedicaComponent implements OnInit {
     try {
       // 1. Crear la atención médica CON EmbarazoActual embebido
       const atencionCreada = await this.atencionMedicaService.create(this.atencionMedica).toPromise();
-      
+
       if (!atencionCreada || !atencionCreada.id) {
         throw new Error('No se pudo crear la atención médica');
       }
@@ -381,8 +399,8 @@ export class FormAtencionMedicaComponent implements OnInit {
             try {
               console.log(`Subiendo PDF para examen ${index}: ${examen.nombre}`);
               const response = await this.atencionMedicaService.subirPdfExamen(
-                atencionCreada.id!, 
-                index, 
+                atencionCreada.id!,
+                index,
                 examen.archivoPdfFile
               ).toPromise();
               console.log(`✅ PDF ${index} subido:`, response);
@@ -397,7 +415,7 @@ export class FormAtencionMedicaComponent implements OnInit {
 
       // Esperar a que se suban todos los PDFs
       const uploadResults = await Promise.all(uploadPromises);
-      
+
       // Verificar resultados
       const errores = uploadResults.filter(result => !result.success);
       if (errores.length > 0) {

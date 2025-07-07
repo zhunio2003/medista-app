@@ -1,6 +1,8 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
+import { Component, AfterViewInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { AuthService } from '../login/auth.service';
+import { Router } from '@angular/router';
+import { Doctor } from '../core/model/doctor';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,12 +10,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent implements AfterViewInit {
+  doctorLogueado: Doctor | null = null;
 
-  constructor(public auth: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngAfterViewInit(): void {
     const hamBurger = document.querySelector(".toggle-btn");
-
     if (hamBurger) {
       hamBurger.addEventListener("click", () => {
         const sidebar = document.querySelector("#sidebar");
@@ -24,7 +26,11 @@ export class SideBarComponent implements AfterViewInit {
     }
   }
 
-  onLogout() {
+  ngOnInit(): void {
+    this.doctorLogueado = this.authService.getDoctorSession();
+  }
+
+  onLogout(): void {
     Swal.fire({
       title: '¿Estás seguro?',
       text: '¿Quieres cerrar sesión?',
@@ -33,8 +39,10 @@ export class SideBarComponent implements AfterViewInit {
       confirmButtonText: 'Sí, cerrar sesión',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
-      if (result.isConfirmed) { 
-        this.auth.logout({ logoutParams: { returnTo: window.location.origin } });      }
+      if (result.isConfirmed) {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
     });
   }
 }

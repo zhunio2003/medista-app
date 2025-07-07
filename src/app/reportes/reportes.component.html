@@ -10,29 +10,57 @@
       <div class="subtitle">Filtro dinámico de pacientes atendidos</div>
     </div>
 
+    <!-- Stats Cards para Reporte de Atenciones -->
+    <div class="stats-container">
+      <!-- Total Atenciones -->
+      <div class="stat-card">
+        <div class="stat-number text-success">{{ atenciones.length }}</div>
+        <div class="stat-label">
+          <i class="fas fa-file-medical me-2"></i>Total de Atenciones
+        </div>
+      </div>
+
+      <!-- Pacientes Únicos -->
+      <div class="stat-card">
+        <div class="stat-number text-primary">{{ getTotalPacientesUnicos() }}</div>
+        <div class="stat-label">
+          <i class="fas fa-users me-2"></i>Pacientes Únicos
+        </div>
+      </div>
+
+      <!-- Género femenino -->
+      <!-- <div class="stat-card">
+        <div class="stat-number text-info">{{ getTotalGenero('femenino') }}</div>
+        <div class="stat-label">
+          <i class="fas fa-venus me-2"></i>Femenino
+        </div>
+      </div> -->
+    </div>
+
     <!-- Filtros -->
     <div class="action-bar">
       <div class="search-container">
-        <select class="select-modern" [(ngModel)]="carreraBusqueda">
+        
+        <!-- <select class="select-modern" [(ngModel)]="carreraBusqueda">
           <option value="" disabled selected>Carrera</option>
           <option value="Desarrollo de Software">Desarrollo de software</option>
           <option value="Tecnología Superior en Big Data">Big Data</option>
           <option value="Ciberseguridad">Ciberseguridad</option>
           <option value="Entrenamiento Deportivo">Entrenamiento Deportivo</option>
           <option value="Tributación">Tributación</option>
-        </select>
+        </select> -->
 
-        <select class="select-modern" [(ngModel)]="profesionBusqueda">
+        <!-- <select class="select-modern" [(ngModel)]="profesionBusqueda">
           <option value="" disabled selected>Paciente</option>
           <option value="Estudiante">Estudiante</option>
           <option value="Profesor">Profesor</option>
-        </select>
+        </select> -->
 
-        <select class="select-modern" [(ngModel)]="generoBusqueda">
+        <!-- <select class="select-modern" [(ngModel)]="generoBusqueda">
           <option value="" disabled selected>Género</option>
           <option value="masculino">Masculino</option>
           <option value="femenino">Femenino</option>
-        </select>
+        </select> -->
 
         <input class="input-modern" type="date" [(ngModel)]="fechaBusqueda" placeholder="Fecha" />
         <input class="input-modern" type="text" [(ngModel)]="cedulaBusqueda" placeholder="Cédula" />
@@ -62,19 +90,17 @@
               <th>Enfermedad Actual</th>
               <th>Tratamiento</th>
               <th>Fecha Visita</th>
-              <th>Receta</th>
-            </tr>
+¡            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let atencion of atenciones; let i = index">
               <td>{{ i + 1 }}</td>
-              <td class="nombre-col">{{ atencion?.fichaMedica?.paciente?.nombre }} {{ atencion?.fichaMedica?.paciente?.apellido }}</td>
-              <td>{{ atencion.fichaMedica.paciente }}</td>
+              <td class="nombre-col">{{ atencion?.fichaMedica?.paciente }}</td>
+              <td>{{ atencion?.fichaMedica?.cedula }}</td>
               <td>{{ atencion?.motivoAte }}</td>
-              <td>{{ atencion?.fichaMedica?.paciente?.fechaNacimiento }}</td>
-              <td>{{ atencion?.fichaMedica?.paciente?.carrera }}</td>
-              <td>{{ atencion?.fechaAtencionAte | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ atencion?.enfermedadActualAte }}</td>
               <td>{{ atencion?.tratamientoAte }}</td>
+              <td>{{ atencion?.fechaAtencionAte | date:'dd/MM/yyyy HH:mm' }}</td>
             </tr>
           </tbody>
         </table>

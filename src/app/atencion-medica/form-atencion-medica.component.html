@@ -3,10 +3,7 @@
         <h2>Ingreso de Atención Medica</h2>
     </div>
 
-
-
     <form ngNativeValidate (ngSubmit)="create()" class="margin">
-
 
         <div class="mx-4">
             <h3 for="motivo">Datos de Filiación</h3>
@@ -92,147 +89,91 @@
                 <input type="text" id="ciclo" name="ciclo" placeholder="Ciclo" disabled
                     [value]="pacienteEncontrado?.ciclo || ''">
             </div>
-
         </fieldset>
 
+        <fieldset *ngIf="esMujer()" class="container-emergencia-obstetrica mx-4">
+            <div class="obstetrics-table-container">
+                <table class="obstetrics-table">
+                    <tbody>
+                        <!-- FILA 1 -->
+                        <tr>
+                            <td class="obstetrics-label">Menarca:</td>
+                            <td class="obstetrics-input"><input type="number" value="12" disabled></td>
+                            <td class="obstetrics-label">Ritmo Menstrual:</td>
+                            <td class="obstetrics-input"><input type="text" value="28/4" disabled></td>
+                            <td class="obstetrics-label">Ciclos:</td>
+                            <td class="obstetrics-input"><input type="number" value="28" disabled></td>
+                            <td class="obstetrics-label">FUM:</td>
+                            <td class="obstetrics-input"><input type="date"></td>
+                            <!-- CHECKBOXES SE EXPANDEN A 2 FILAS -->
+                            <td class="obstetrics-checkbox-section" rowspan="2">
+                                <div class="checkbox-group">
+                                    <span class="checkbox-title">Marque según aplique:</span>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="dismenorrea">
+                                        <label for="dismenorrea">Dismenorrea</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="mastodinia">
+                                        <label for="mastodinia">Mastodinia</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
 
-        <!-- SECCIÓN: Emergencias Obstétricas -->
-<div class="mx-4 mt-4" *ngIf="esMujer()">
-    <h3>Emergencias Obstétricas</h3>
-</div>
+                        <!-- FILA 2 -->
+                        <tr>
+                            <td class="obstetrics-label">IVSA:</td>
+                            <td class="obstetrics-input"><input type="number" value="16" disabled></td>
+                            <td class="obstetrics-label">N° Parejas sexuales:</td>
+                            <td class="obstetrics-input"><input type="number" value="2" disabled></td>
+                            <!-- GAPC SE EXPANDE A 2 COLUMNAS -->
+                            <td class="obstetrics-label">GAPC:</td>
+                            <td class="obstetrics-gapc-section" rows="2">
+                                <div class="gapc-container">
+                                        <div class="gapc-input-group">
+                                            <label>G:</label>
+                                            <input type="number" value="1">
+                                        </div>
+                                        <div class="gapc-input-group">
+                                            <label>A:</label>
+                                            <input type="number">
+                                        </div>
+                                        <div class="gapc-input-group">
+                                            <label>P:</label>
+                                            <input type="number" value="1">
+                                        </div>
+                                        <div class="gapc-input-group">
+                                            <label>C:</label>
+                                            <input type="number">
+                                        </div>
+                                </div>
+                            </td>
+                        </tr>
 
-<fieldset *ngIf="esMujer()" class="container-emergencia-obstetrica mx-4">
-    <div class="obstetrics-table-container">
-        <table class="obstetrics-table">
-            <tbody>
-                <tr>
-                    <td class="obstetrics-label">Menarca:</td>
-                    <td class="obstetrics-input">
-                        <input type="number" id="menarca" name="menarca" 
-                            [value]="historialGinecologico?.menarca || ''" disabled>
-                    </td>
-                    <td class="obstetrics-label">Ritmo Menstrual:</td>
-                    <td class="obstetrics-input">
-                        <input type="text" id="ritmo_menstrual" name="ritmo_menstrual" 
-                            [value]="historialGinecologico?.ritmoMenstrual || ''" disabled>
-                    </td>
-                    <td class="obstetrics-label">Ciclos:</td>
-                    <td class="obstetrics-input">
-                        <input type="number" id="ciclos" name="ciclos" 
-                            [value]="historialGinecologico?.ciclos || ''" disabled>
-                    </td>
-                    <td class="obstetrics-label">FUM:</td>
-                    <td class="obstetrics-input obstetrics-date">
-                        <span class="date-labels">D___ M___ A___</span>
-                        <input type="date" id="fum" name="fum" 
-                            [value]="atencionMedica.embarazoActual.getFumFormatted()" 
-                            (change)="onFumChange($event)">
-                    </td>
-                    <td class="obstetrics-checkbox-section">
-                        <div class="checkbox-group">
-                            <span class="checkbox-title">Marque según aplique:</span>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="dismenorrea" name="dismenorrea"
-                                    [checked]="historialGinecologico?.dismenorrea || false" disabled>
-                                <label for="dismenorrea">Dismenorrea</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="mastodinia" name="mastodinia"
-                                    [checked]="historialGinecologico?.mastodinia || false" disabled>
-                                <label for="mastodinia">Mastodinia</label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="obstetrics-label">IVSA:</td>
-                    <td class="obstetrics-input">
-                        <input type="number" id="ivsa" name="ivsa" 
-                            [value]="historialGinecologico?.ivsa || ''" disabled>
-                    </td>
-                    <td class="obstetrics-label">N° Parejas sexuales:</td>
-                    <td class="obstetrics-input">
-                        <input type="number" id="numero_parejas_sexuales" name="numero_parejas_sexuales" 
-                            [value]="historialGinecologico?.numeroParejaSexuales || ''" disabled>
-                    </td>
-                    <td colspan="2" class="obstetrics-gapc-section">
-                        <div class="gapc-container">
-                            <span class="gapc-label">G___A___P___C___</span>
-                            <div class="gapc-inputs">
-                                <div class="gapc-input-group">
-                                    <label>G:</label>
-                                    <input type="number" id="gestas" name="gestas" 
-                                        [value]="historialGinecologico?.gestas || ''" disabled>
-                                </div>
-                                <div class="gapc-input-group">
-                                    <label>A:</label>
-                                    <input type="number" id="abortos" name="abortos" 
-                                        [value]="historialGinecologico?.abortos || ''" disabled>
-                                </div>
-                                <div class="gapc-input-group">
-                                    <label>P:</label>
-                                    <input type="number" id="partos" name="partos" 
-                                        [value]="historialGinecologico?.partos || ''" disabled>
-                                </div>
-                                <div class="gapc-input-group">
-                                    <label>C:</label>
-                                    <input type="number" id="cesareas" name="cesareas" 
-                                        [value]="historialGinecologico?.cesareas || ''" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td class="obstetrics-label">¿Está embarazada?:</td>
-                    <td class="obstetrics-input">
-                        <input type="checkbox" id="isEmbarazada" name="isEmbarazada"
-                            [(ngModel)]="atencionMedica.embarazoActual.isEmbarazada"
-                            (change)="onEmbarazadaChange()">
-                    </td>
-                    <td class="obstetrics-label">FPP:</td>
-                    <td class="obstetrics-input obstetrics-date">
-                        <span class="date-labels">D___ M___ A___ SG___</span>
-                        <input type="date" id="fpp" name="fpp" 
-                            [value]="atencionMedica.embarazoActual.getFppFormatted()"
-                            (change)="onFppChange($event)"
-                            *ngIf="atencionMedica.embarazoActual.isEmbarazada">
-                    </td>
-                    <td class="obstetrics-label">Controles:</td>
-                    <td class="obstetrics-input">
-                        <input type="number" id="controles" name="controles" 
-                            [(ngModel)]="atencionMedica.embarazoActual.controles"
-                            *ngIf="atencionMedica.embarazoActual.isEmbarazada"
-                            placeholder="Número de controles">
-                    </td>
-                    <td class="obstetrics-label">Inmunizaciones:</td>
-                    <td class="obstetrics-input">
-                        <input type="text" id="inmunizaciones" name="inmunizaciones" 
-                            [(ngModel)]="atencionMedica.embarazoActual.inmunizaciones"
-                            *ngIf="atencionMedica.embarazoActual.isEmbarazada"
-                            placeholder="Inmunizaciones recibidas">
-                    </td>
-                    <td class="obstetrics-input" *ngIf="atencionMedica.embarazoActual.isEmbarazada">
-                        <div class="semanas-gestacion">
-                            <label>Semanas:</label>
-                            <span>{{atencionMedica.embarazoActual.semanasGestacion || 0}} SG</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="9" class="obstetrics-description">
-                        <label for="descripcion_embarazo">Descripción / Observaciones:</label>
-                        <textarea id="descripcion_embarazo" name="descripcion_embarazo" 
-                            [(ngModel)]="atencionMedica.embarazoActual.descripcion"
-                            placeholder="Observaciones sobre el embarazo actual..." rows="3"></textarea>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</fieldset>
+                        <!-- FILA 3 -->
+                        <tr>
+                            <td class="obstetrics-label">¿Está embarazada?:</td>
+                            <td class="obstetrics-input"><input type="checkbox"></td>
+                            <td class="obstetrics-label">FPP:</td>
+                            <td class="obstetrics-input"><input type="date"></td>
+                            <td class="obstetrics-label">Controles:</td>
+                            <td class="obstetrics-input"><input type="number"></td>
+                            <td class="obstetrics-label">Inmunizaciones:</td>
+                            <td class="obstetrics-input"><input type="text"></td>
+                            </tr>
 
+                        <!-- FILA 4: DESCRIPCIÓN -->
+                        <tr>
+                            <td colspan="9" class="obstetrics-description">
+                                <label>Descripción / Observaciones:</label>
+                                <textarea placeholder="Observaciones..." rows="3"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
 
         <div class="mx-4 mt-4">
             <h3 for="motivo">Motivo Consulta:</h3>
@@ -242,7 +183,6 @@
             <textarea id="motivAteo" name="motivoAte" placeholder="Escribe tus observaciones aquí..." rows="4" cols="50"
                 [(ngModel)]="atencionMedica.motivoAte"></textarea>
         </fieldset>
-
 
         <div class="mx-4 mt-4">
             <h3 for="motivo">Antecedentes familiares y personales</h3>
@@ -379,8 +319,6 @@
             </div>
         </fieldset>
 
-
-
         <div class="mx-4 mt-4">
             <h3 for="examenfisico">Exámen Físico</h3>
         </div>
@@ -440,8 +378,6 @@
             </div>
         </fieldset>
 
-
-
         <div class="mx-4 mt-4">
             <h3 for="examenes">Exámenes Complementarios</h3>
         </div>
@@ -469,7 +405,6 @@
                             <div class="custom-file-upload">
                                 <input type="file" id="documentoExa{{i}}" name="documentoExa{{i}}"
                                     (change)="onFileChange($event, i)" class="file-input">
-
                             </div>
                         </td>
                     </tr>
@@ -532,8 +467,6 @@
             <button type="button" (click)="addDiagnostico()" class="botonCrearFila">Agregar Diagnóstico</button>
         </div>
 
-
-
         <div class="textarea-container mx-4">
             <h3 for="tratamiento">Tratamiento</h3>
             <textarea id="tratamiento" name="tratamiento" placeholder="Escribe tus observaciones aquí..." rows="4"
@@ -546,5 +479,4 @@
         </div>
 
     </form>
-
 </div>

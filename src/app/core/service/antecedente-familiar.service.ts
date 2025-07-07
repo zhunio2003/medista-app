@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AntecedenteFamiliar } from '../../ficha-medica/modelo/antecedente-familiar';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environment/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 export class AntecedenteFamiliarService {
 
   // ✅ CORREGIDO: comillas invertidas para interpolar
-  private urlEndPoint: string = `${environment.apiUrl}/antecedentes_familiares`;
+  private urlEndPoint: string = `${environment.apiBaseUrl}/antecedentes_familiares`;
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }

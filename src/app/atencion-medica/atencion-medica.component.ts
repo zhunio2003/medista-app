@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AtencionMedica } from '../core/model/atencion-medica';
 import { AtencionMedicaService } from '../core/service/atencion-medica.service';
 import { FichaMedicaService } from '../core/service/ficha-medica.service';
@@ -11,58 +11,68 @@ import { Paciente } from '../ficha-medica/modelo/paciente';
   templateUrl: `./index-atencion-medica.component.html`,
   styleUrl: './atencion-medica.component.css'
 })
-export class AtencionMedicaComponent {
-  atencionesMedicas: AtencionMedica[] = []; // Asegúrate de inicializar como un arreglo vacío
+export class AtencionMedicaComponent implements OnInit {
+  atencionesMedicas: AtencionMedica[] = [];
 
+  // ✅ SOLO AGREGUÉ ESTAS VARIABLES PARA BÚSQUEDA
   cedulaBusqueda: string = '';
+  fechaBusqueda: string = '';
+  // ✅ FIN DE LO AGREGADO
+
   atencionMedicaEncontrado: AtencionMedica | null = null;
   pacienteEncontrado: Paciente | null = null;
   AtencioMedicaEncontrado: AtencionMedica | null = null;
 
-
   constructor(
     private atencionMedicaService: AtencionMedicaService
-
   ) { }
 
   ngOnInit(): void {
     this.cargarAtencionesMedicas();
   }
+
   // metodo carga los datos en la tabla
   cargarAtencionesMedicas(): void {
     this.atencionMedicaService.getAtencionesMedicas().subscribe(atencionesMedicas => {
-      atencionesMedicas = this.atencionesMedicas = atencionesMedicas;
-
+      this.atencionesMedicas = atencionesMedicas;
     });
   }
 
+  // ✅ SOLO AGREGUÉ ESTE MÉTODO DE BÚSQUEDA
+  buscar(): void {
+    this.atencionMedicaService.getAtencionesMedicas().subscribe(
+      atenciones => {
+        let atencionesFiltradas = atenciones;
 
+        if (this.cedulaBusqueda && this.cedulaBusqueda.trim() !== '') {
+          atencionesFiltradas = atencionesFiltradas.filter(atencion => 
+            atencion.fichaMedica.cedula === this.cedulaBusqueda.trim()
+          );
+        }
 
-
-  /// BOTON ELIMINAR
-  //eliminar datos de la base
-  /*deleteDoctor(id:number):void{
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.doctorService.deleteDoctor(id).subscribe(response => {
-          this.doctores=this.doctores.filter(Doctor=>Doctor.idDoctor !==id);
-          Swal.fire({
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
-            icon: 'success'
+        if (this.fechaBusqueda && this.fechaBusqueda.trim() !== '') {
+          atencionesFiltradas = atencionesFiltradas.filter(atencion => {
+            const fechaAtencion = new Date(atencion.fechaAtencionAte).toISOString().split('T')[0];
+            return fechaAtencion === this.fechaBusqueda;
           });
-        });
+        }
+
+        this.atencionesMedicas = atencionesFiltradas;
+      },
+      error => {
+        console.error('Error al buscar las atenciones:', error);
       }
-    });
-  }*/
+    );
+  }
+
+  // ✅ SOLO AGREGUÉ ESTE MÉTODO PARA VER TODO
+  verTodo(): void {
+    this.cargarAtencionesMedicas();
+    this.cedulaBusqueda = '';
+    this.fechaBusqueda = '';
+  }
+  // ✅ FIN DE LO AGREGADO
+
   verDetalles(atencionMedica: AtencionMedica): void {
     Swal.fire({
       title: `Paciente ${atencionMedica.fichaMedica.paciente}`,
@@ -75,6 +85,7 @@ export class AtencionMedicaComponent {
       `,
     });
   }
+
   contarExamenesAplicados(): number {
     let total = 0;
     for (let atencion of this.atencionesMedicas) {
@@ -94,8 +105,4 @@ export class AtencionMedicaComponent {
     }
     return total;
   }
-
-
-
-
 }

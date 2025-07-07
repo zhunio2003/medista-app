@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Discapacidad } from '../../ficha-medica/modelo/discapacidad';
-import { environment } from '../../../environment/environment'; 
+import { environment } from '../../../environment/environment.prod';
 
 
 @Injectable({
@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 })
 export class DiscapacidadService {
 
-  private urlEndPoint: string = `${environment.apiUrl}/discapacidades`;
+  private urlEndPoint: string = `${environment.apiBaseUrl}/discapacidades`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'})
 
   constructor(private http:HttpClient) { }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Doctor } from '../model/doctor';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environment/environment.prod';
 
 
 @Injectable({
@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 })
 export class DoctorService {
 
-  private urlEndPoint: string = `${environment.apiUrl}/doctores`;
+  private urlEndPoint: string = `${environment.apiBaseUrl}/doctores`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'})
 
   constructor(private http:HttpClient) { }

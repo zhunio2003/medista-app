@@ -9,6 +9,7 @@
       </h1>
       <div class="subtitle">Registro y visualización de atenciones realizadas a pacientes</div>
     </div>
+    
     <!-- Stats Cards Reales -->
     <div class="stats-container">
       <div class="stat-card">
@@ -29,7 +30,6 @@
       </div>
     </div>
 
-
     <!-- Barra de acciones -->
     <div class="action-bar">
       <button class="btn btn-success-modern btn-modern" type="button"
@@ -42,14 +42,14 @@
         <input type="text" class="form-control form-control-modern" placeholder="Buscar por cédula"
           [(ngModel)]="cedulaBusqueda">
 
-        <input type="date" class="form-control form-control-modern">
+        <input type="date" class="form-control form-control-modern" [(ngModel)]="fechaBusqueda">
 
-        <button class="btn btn-primary-modern btn-modern">
+        <button class="btn btn-primary-modern btn-modern" (click)="buscar()">
           <i class="fas fa-search me-2"></i>
           Buscar
         </button>
 
-        <button class="btn btn-secondary-modern btn-modern">
+        <button class="btn btn-secondary-modern btn-modern" (click)="verTodo()">
           <i class="fas fa-sync me-2"></i>
           Ver Todo
         </button>
