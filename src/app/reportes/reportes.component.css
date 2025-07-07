@@ -553,3 +553,31 @@
   color: #6c757d;
   text-transform: uppercase;
 }
+/* Agrega esto a tu archivo de estilos */
+.btn-pdf {
+  background-color: #ff5252;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-pdf:hover {
+  background-color: #ff0000;
+}
+
+.btn-pdf i {
+  margin-right: 5px;
+}
+
+/* Ajustes para la tabla */
+.table-modern td, .table-modern th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.nombre-col {
+  text-align: left !important;
+}

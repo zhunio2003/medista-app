@@ -40,7 +40,7 @@
     <!-- Filtros -->
     <div class="action-bar">
       <div class="search-container">
-        
+
         <!-- <select class="select-modern" [(ngModel)]="carreraBusqueda">
           <option value="" disabled selected>Carrera</option>
           <option value="Desarrollo de Software">Desarrollo de software</option>
@@ -84,13 +84,14 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Estudiante</th>
+              <th>Paciente</th>
               <th>Cédula</th>
               <th>Motivo</th>
               <th>Enfermedad Actual</th>
               <th>Tratamiento</th>
               <th>Fecha Visita</th>
-¡            </tr>
+              <th>Acciones</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let atencion of atenciones; let i = index">
@@ -101,6 +102,25 @@
               <td>{{ atencion?.enfermedadActualAte }}</td>
               <td>{{ atencion?.tratamientoAte }}</td>
               <td>{{ atencion?.fechaAtencionAte | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <button class="btn btn-primary" (click)="handleViewPDF($event, atencionMedica)"
+                  [disabled]="loadingPdf[atencionMedica.id]">
+
+                  <span *ngIf="loadingPdf[atencionMedica.id]">
+                    <i class="fa fa-spinner fa-spin"></i> Generando...
+                  </span>
+                  <span *ngIf="!loadingPdf[atencionMedica.id]">
+                    <i class="fa fa-file-pdf-o"></i> Ver PDF
+                  </span>
+                </button>
+
+                <!-- Botón adicional para descargar -->
+                <button class="btn btn-success ml-2" (click)="descargarPDF($event, atencionMedica)"
+                  [disabled]="loadingPdf[atencionMedica.id]">
+
+                  <i class="fa fa-download"></i> Descargar
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
