@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EmergenciaObstetrica } from '../model/emergencia-obstetrica';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environment/environment.prod';
 
 
 @Injectable({
@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 })
 export class EmergenciaObstetricaService {
 
-  private urlEndPoint: string = `${environment.apiUrl}/emergencias_obstetricas`;
+  private urlEndPoint: string = `${environment.apiBaseUrl}/emergencias_obstetricas`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'})
 
   constructor(private http:HttpClient) { }

@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://TU_IP_PUBLICA:8080/api' // o dominio si ya tienes
+  //apiBaseUrl: 'http://34.42.10.91:8381/api' // o dominio si ya tienes
+    apiBaseUrl: 'http://localhost:8080/api' // o dominio si ya tienes
+
 };

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExamenComplementario } from '../model/examen-complementario';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environment/environment.prod';
 
 
 @Injectable({
@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 })
 export class ExamenComplementarioService {
 
-  private urlEndPoint: string = `${environment.apiUrl}/examenes_complementarios`;
+  private urlEndPoint: string = `${environment.apiBaseUrl}/examenes_complementarios`;
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }

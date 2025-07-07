@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AtencionMedica } from '../core/model/atencion-medica';
 import { FichaMedicaService } from '../core/service/ficha-medica.service';
-import { PacienteService } from '../reportes/paciente.service';
+import { PacienteService } from '../core/service/paciente.service';
 import { ExamenComplementario } from '../core/model/examen-complementario';
 import Swal from 'sweetalert2';
 import { SignoVital } from '../core/model/signo-vital';

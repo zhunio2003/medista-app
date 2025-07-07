@@ -10,6 +10,34 @@
       <div class="subtitle">Filtro dinámico de pacientes atendidos</div>
     </div>
 
+    <!-- Stats Cards para Reporte de Atenciones -->
+    <div class="stats-container">
+      <!-- Total Atenciones -->
+      <div class="stat-card">
+        <div class="stat-number text-success">{{ atenciones.length }}</div>
+        <div class="stat-label">
+          <i class="fas fa-file-medical me-2"></i>Total de Atenciones
+        </div>
+      </div>
+
+      <!-- Pacientes Únicos -->
+      <div class="stat-card">
+        <div class="stat-number text-primary">{{ getTotalPacientesUnicos() }}</div>
+        <div class="stat-label">
+          <i class="fas fa-users me-2"></i>Pacientes Únicos
+        </div>
+      </div>
+
+      <!-- Género femenino -->
+      <div class="stat-card">
+        <div class="stat-number text-info">{{ getTotalGenero('femenino') }}</div>
+        <div class="stat-label">
+          <i class="fas fa-venus me-2"></i>Femenino
+        </div>
+      </div>
+    </div>
+
+
     <!-- Filtros -->
     <div class="action-bar">
       <div class="search-container">
